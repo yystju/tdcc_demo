@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Peer Connection Test -- Caller</title>
+	<style type="text/css">
+		textarea {
+			display: block;
+			width: 1024px;
+			height: 240px;
+		}
+	</style>
+	<script type="text/javascript">
+	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+	window.RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+	
+	var pc_config = {
+		'iceServers': [
+			{
+				'url': 'stun:jstun.javawi.de:3478'
+			}
+			/*
+			{
+				'url': 'stun:stun.l.google.com:19302'
+			},
+			{
+				'url': 'stun:stun.stunprotocol.org:3478'
+			},
+			{
+				'url': 'stun:jstun.javawi.de:3478'
+			}
+			*/
+		]
+	};
+	
+	var pc = null;
+	
+	window.addEventListener('load', function() {
+		if(window.RTCPeerConnection) {
+			document.querySelector('#btnOffer').addEventListener('click', function() {
+				document.querySelector('#btnOffer').setAttribute('disabled', 'disabled');
+				
+				var candiate = document.querySelector('#candiate');
+				
+				var v1 = document.querySelector('#v1');
+				
+				candiate.value = '';
+				
+				pc = new window.RTCPeerConnection(pc_config);
+				
+				pc.onicecandidate = function(evt) {
+					console.log('[onicecandidate]', evt);
+					console.dir(evt.candidate);
+					
+					if(evt.candidate) {
+						candiate.value = candiate.value + ('\r\n,' + JSON.stringify(evt.candidate));
+						
+						pc.addIceCandidate(new RTCIceCandidate(evt.candidate));
+					}
+				};
+				
+				pc.onnegotiationneeded = function(evt) {
+					console.log('[onnegotiationneeded]', evt);
+				};
+				
+				pc.oniceconnectionstatechange = function(evt) {
+					console.log('[oniceconnectionstatechange]', evt);
+				};
+				
+				
+				pc.onremovestream = function(evt) {
+					console.log('[onremovestream]', evt);
+				};
+				
+				pc.onsignalingstatechange = function(evt) {
+					console.log('[onsignalingstatechange]', evt);
+				};
+				
+				pc.onaddstream = function(evt) {
+					console.log('[onaddstream]', evt);
+				};
+				
+				navigator.getUserMedia({
+					video: {
+						mandatory: {
+							maxWidth: 320,
+							maxHeight: 180
+						}
+					}
+				}, function(stream) {
+					console.dir(stream);
+					
+					v1.src = URL.createObjectURL(stream);
+					
+					pc.addStream(stream);
+					
+					pc.createOffer(function(desc) {
+						pc.setLocalDescription(desc, function () {
+							var txt = JSON.stringify(desc);
+							document.querySelector('#offer').value = txt;
+						}, function(err) {
+							console.log(err);
+						});
+					});
+				}, function(error) {
+					console.log('[Error]', error);
+				});
+			}, false);
+			
+			document.querySelector('#btnAnswer').addEventListener('click', function() {
+				document.querySelector('#btnAnswer').setAttribute('disabled', 'disabled');
+				
+				var desc = new RTCSessionDescription(JSON.parse(document.querySelector('#offer').value));
+				
+				pc.setRemoteDescription(desc);
+			}, false);
+		}
+	}, false);
+	</script>
+</head>
+<body>
+	<button id="btnOffer">Offer</button><button id="btnAnswer">Answer</button>
+	<textarea name="candiate" id="candiate">Candiate</textarea>
+	<textarea name="offer" id="offer">Offer</textarea>
+	<video id="v1"></video>
+</body>
+</html>

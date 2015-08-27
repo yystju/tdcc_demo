@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Media Test -- WebCam</title>
+	<style type="text/css">
+	    #v1 {
+	        width: 640px;
+            height: 360px;
+            
+            -webkit-transition: all 0.5s;
+            transition: all 0.5s;
+	    }
+	    
+	    @-webkit-keyframes example {
+            0%   {
+                -ms-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            25%  {
+                -ms-transform: translate(50px,10px) rotate(-10deg);
+                -webkit-transform: translate(50px,10px) rotate(-10deg);
+                transform: translate(50px,10px) rotate(-10deg);
+            }
+            50%  {
+                -ms-transform: translate(50px,10px) rotate(10deg);
+                -webkit-transform: translate(50px,10px) rotate(10deg);
+                transform: translate(50px,10px) rotate(10deg);
+            }
+            100% {
+                -ms-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+        
+        @keyframes example {
+            0%   {
+                -ms-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            25%  {
+                -ms-transform: translate(50px,10px) rotate(-10deg);
+                -webkit-transform: translate(50px,10px) rotate(-10deg);
+                transform: translate(50px,10px) rotate(-10deg);
+            }
+            50%  {
+                -ms-transform: translate(50px,10px) rotate(10deg);
+                -webkit-transform: translate(50px,10px) rotate(10deg);
+                transform: translate(50px,10px) rotate(10deg);
+            }
+            100% {
+                -ms-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+        
+        #v1:hover {
+            width: 1280px;
+            height: 720px;
+            
+            -webkit-animation-name: example;
+            -webkit-animation-duration: 0.5s;
+            
+            animation-name: example;
+            animation-duration: 0.5s;
+            
+            +filter: blur(3px);
+        }
+	</style>
+	<script type="text/javascript">
+	
+	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+	
+	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	
+	window.addEventListener('DOMContentLoaded', function() {
+	   // //Check the media sources.
+	   // MediaStreamTrack.getSources(function(srcInfos) {
+	   //     for (var i = 0; i != srcInfos.length; ++i) {
+	   //         console.log('kind := ' + srcInfos[i].kind + ', id := ' + srcInfos[i].id + ', label := ' + srcInfos[i].label);
+	   //     }
+	   // });
+	    
+        var v1 = document.querySelector('#v1');
+	    
+	    var options = {video: {
+            mandatory: {
+                minWidth: 1280,
+                minHeight: 720
+            }
+        }, audio: false};
+	    
+	    navigator.getUserMedia(options, function(stream) {
+	        console.log('URL := ' + URL.createObjectURL(stream));
+	        
+	        v1.addEventListener('loadedmetadata', function(evt) {
+	            console.log('[loadedmetadata]');
+	        }, false);
+	        
+	        v1.src = URL.createObjectURL(stream);
+	    }, function(err) {
+	        console.dir(err);
+	    });
+	    
+	    
+	   // var context = new AudioContext();
+
+    //     navigator.getUserMedia({audio: true}, function(stream) {
+    //         var microphone = context.createMediaStreamSource(stream);
+    //         var filter = context.createBiquadFilter();
+            
+    //         // microphone -> filter -> destination.
+    //         microphone.connect(filter);
+    //         filter.connect(context.destination);
+            
+    //         //microphone.start(0);
+    //     }, function(err) {
+	   //     console.dir(err);
+	   // });
+	}, false);
+	</script>
+</head>
+<body>
+	<video id="v1" autoplay="autoplay"></video>
+</body>
+</html>

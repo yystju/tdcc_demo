@@ -1,0 +1,83 @@
+#c1 {
+    border: 1px solid darkgray;
+    box-sizing: border-box;
+    outline-offset: 15px;
+    width: 512px;
+    height: 512px;
+    
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+@-webkit-keyframes example {
+    0%   {
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    25%  {
+        -ms-transform: translate(50px,10px) rotate(-10deg);
+        -webkit-transform: translate(50px,10px) rotate(-10deg);
+        transform: translate(50px,10px) rotate(-10deg);
+    }
+    50%  {
+        -ms-transform: translate(50px,10px) rotate(10deg);
+        -webkit-transform: translate(50px,10px) rotate(10deg);
+        transform: translate(50px,10px) rotate(10deg);
+    }
+    100% {
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes example {
+    0%   {
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    25%  {
+        -ms-transform: translate(50px,10px) rotate(-10deg);
+        -webkit-transform: translate(50px,10px) rotate(-10deg);
+        transform: translate(50px,10px) rotate(-10deg);
+    }
+    50%  {
+        -ms-transform: translate(50px,10px) rotate(10deg);
+        -webkit-transform: translate(50px,10px) rotate(10deg);
+        transform: translate(50px,10px) rotate(10deg);
+    }
+    100% {
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+
+#c1:hover {
+    width: 1024px;
+    height: 1024px;
+    
+    border: 1px solid lightblue;
+    
+    -webkit-animation-name: example;
+    -webkit-animation-duration: 0.5s;
+    
+    animation-name: example;
+    animation-duration: 0.5s;
+}
+
+.explaining {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    
+    -webkit-column-gap: 40px;
+    -moz-column-gap: 40px;
+    column-gap: 40px;
+    
+    -webkit-column-rule: 1px solid lightblue;
+    -moz-column-rule: 1px solid lightblue;
+    column-rule: 1px solid lightblue;
+}

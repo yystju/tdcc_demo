@@ -1,0 +1,117 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Topic Gallery</title>
+	<link rel="stylesheet" type="text/css" href="css/index.css" media="all"/>
+	<script type="text/javascript" src="./js/index.js"></script>
+	<script id="topicTemplate" type="text/html" class="template">
+	<!--Template-->
+	<div class="mainPane topic">
+		<div class="leftPane">
+		<!--Main content-->
+		<article>
+		<h1 class="topicTitle">%%{this.topicTitle}%%</h1>
+		<img class="topicShowImage" src="%%{this.showImageURL}%%" alt="%%{this.topicTitle}%%"/>
+		<q class="topicDescriptionQuote" cite="%%{this.topicDescriptionCiteURL}%%"><p>%%{this.topicDescription}%%</p></q>
+		<cite>(See <a class="topicLink" href="%%{this.topicDescriptionCiteURL}%%">%%{this.topicDescriptionCiteName}%%</a>)</cite>
+		<div style="clear:both;"></div>
+		<div>
+			<h2>Useful References:</h2>
+			<ul class="topicReferenceList">
+				%%{
+					/*topicReferenceList*/
+					var tmp = '';
+					for(var i = 0; i < this.topicReference.length; ++i) {
+						tmp += '<li><a href="' + this.topicReference[i].url + '">' + this.topicReference[i].text + '</a></li>';
+					}
+					tmp;
+				}%%
+			</ul>
+		</div>
+		</article>
+		</div>
+		<div class="rightPane">
+		<!--Owner Profile-->
+		<div class="verticleSplitter"></div>
+		<article class="topicOwner">
+			<h1>Owner</h1>
+			<img class="portrait" src="%%{this.topicOwner.imgURL}%%" alt="%%{this.topicOwner.fullName}%%"/>
+			<div><a href="mailto:%%{this.topicOwner.emailAddress}%%">%%{this.topicOwner.fullName}%%</a></div>
+		</article>
+		<article class="topicEvaluator">
+			<h1>Evaluator</h1>
+			<img class="portrait" src="%%{this.topicEvaluator.imgURL}%%" alt="%%{this.topicEvaluator.fullName}%%"/>
+			<div><a href="mailto:%%{this.topicEvaluator.emailAddress}%%">%%{this.topicEvaluator.fullName}%%</a></div>
+		</article>
+		</div>
+		<div class="footerPane">
+		<!--Interested member list-->
+		<div class="horizentalSplitter"></div>
+		<article class="topicFollower">
+			%%{
+				/*topicFollower*/
+				
+				var tmp = '';
+				
+				for(var i = 0; i < this.topicFollowers.length; ++i) {
+					tmp += '<a href="mailto:'+this.topicFollowers[i].emailAddress+'"><div class="portraitSmall" style="background-image: url('+this.topicFollowers[i].imgURL+');"></div></a>';
+				}
+				
+				tmp;
+			}%%
+			
+			<a href="javascript:void(0);" onclick="alert('This will add the current logon user to the follower list.');"><div class="portraitSmall plusMe"></div></a>
+			<a href="mailto:%%{this.topicOwner.emailAddress}%%, %%{this.topicEvaluator.emailAddress}%%, %%{
+				/*topicFollowerEmailList*/
+				
+				var tmp = '';
+				
+				for(var i = 0; i < this.topicFollowers.length; ++i) {
+					if(i != 0) {
+						tmp += ', ';
+					}
+					tmp += (this.topicFollowers[i].emailAddress);
+				}
+				
+				tmp;
+			}%%?subject=[TDCC Topic] Let's talk about your TDCC topic: %%{this.topicTitle}%%."><div class="portraitSmall groupMail"></div></a>
+		</article>
+		</div>
+	</div>
+	</script>
+</head>
+<body>
+	<div id="content">
+		<p>This is the content. <a href="javascript:void(0);" id="openAnchor">Open Topic Gallery</a></p>
+		<p><a href="javascript:void(0);" id="createPortraitAnchor">Create Portrait</a></p>
+	</div>
+	
+	<div id="floatPaneBackground" class="invisible"></div>
+	<div id="floatPane" class="invisible">
+		<div class="paneWrapper">
+			<div class="leftScrollPane">&lt;</div>
+			<div class="rightScrollPane">&gt;</div>
+		</div>
+	</div>
+	
+	<div id="takPicturePaneBackground" class="invisible"></div>
+	<div id="takePicturePane" class="invisible">
+		<div id="pictureCanvasWrapper">
+			<canvas id="pictureCanvas"></canvas>
+			<div id="caputrePicPane" class="invisible">
+				<a href="javascript:void(0);" id="capturePicAnchor">Take a portrait...</a>
+			</div>
+			<div id="uploadPicPane" class="invisible">
+				<input type="file" id="uploadPic" name="uploadPic" />
+			</div>
+		</div>
+	</div>
+	
+	<div id="capturePicturePaneBackground" class="invisible"></div>
+	<div id="capturePicturePane" class="invisible">
+		<video id="pictureVideo" class="debug" autoplay></video>
+		<p>Click the video above to capture portrait.</p>
+	</div>
+</body>
+</html>

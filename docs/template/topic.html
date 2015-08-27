@@ -1,0 +1,42 @@
+<!--Template-->
+<div class="mainPane topic">
+	<div class="leftPane">
+	<!--Main content-->
+	<article>
+	<h1 class="topicTitle">${topicTitle}</h1>
+	<img class="topicShowImage" src="${showImageURL}" alt="${topicTitle}"/>
+	<q class="topicDescriptionQuote" cite="${topicDescriptionCiteURL}"><p>${topicDescription}</p></q>
+	<cite>(See <a class="topicLink" href="${topicDescriptionCiteURL}">${topicDescriptionCiteName}</a>)</cite>
+	<div style="clear:both;"></div>
+	<div>
+		<h2>Useful References:</h2>
+		<ul class="topicReferenceList">
+			<li><a href="${topicReference[$].url}">${topicReference[$].text}</a></li>
+		</ul>
+	</div>
+	</article>
+	</div>
+	<div class="rightPane">
+	<!--Owner Profile-->
+	<div class="verticleSplitter"></div>
+	<article class="topicOwner">
+		<h1>Owner</h1>
+		<img class="portrait" src="${topicOwner.imgURL}" alt="${topicOwner.fullName}"/>
+		<div><a href="mailto:${topicOwner.emailAddress}">${topicOwner.fullName}</a></div>
+	</article>
+	<article class="topicEvaluator">
+		<h1>Evaluator</h1>
+		<img class="portrait" src="${topicEvaluator.imgURL}" alt="${topicEvaluator.fullName}"/>
+		<div><a href="mailto:${topicEvaluator.emailAddress}">${topicEvaluator.fullName}</a></div>
+	</article>
+	</div>
+	<div class="footerPane">
+	<!--Interested member list-->
+	<div class="horizentalSplitter"></div>
+	<article class="topicFollower">
+		<a href="mailto:${topicFollowers[$].emailAddress}"><div class="portraitSmall" style="background-image: url(${topicFollowers[$].portraitURL});"></div></a>
+		<a href="javascript:void(0);" onclick="alert('This will add the current logon user to the follower list.');"><div class="portraitSmall plusMe"></div></a>
+		<a href="${topicOwner.emailAddress}, ${topicEvaluator.emailAddress}, ${topicFollowerEmailList}?subject=[TDCC Topic] Let's talk about your TDCC topic: ${topicTitle}."><div class="portraitSmall groupMail"></div></a>
+	</article>
+	</div>
+</div>

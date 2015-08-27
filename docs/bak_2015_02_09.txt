@@ -1,0 +1,144 @@
+			<!--1-->
+			<div class="topic mainPane">
+				<div class="leftPane">
+				<!--Main content-->
+				<article>
+				<h1>Topic: Zencoding introduction.</h1>
+				<img src="./imgs/zen_coding.png" alt="Zen-Coding Sample" style="border: 1px dashed gray; float: left; padding: 5px; margin: 10px;"/>
+				<q cite="https://code.google.com/p/zen-coding/"><p>Zen Coding is an editor plugin for high-speed HTML, XML, XSL (or any other structured code format) coding and editing. The core of this plugin is a powerful abbreviation engine which allows you to expand expressions—similar to CSS selectors—into HTML code.</p></q>
+				<cite>(See <a href="https://code.google.com/p/zen-coding/">zen-coding home</a>)</cite>
+				<div style="clear:both;"></div>
+				<div>
+					<h2>Useful References:</h2>
+					<ul>
+						<li><a href="http://www.smashingmagazine.com/2009/11/21/zen-coding-a-new-way-to-write-html-code/">Zen Coding: A Speedy Way To Write HTML/CSS Code</a></li>
+						<li><a href="">B</a></li>
+						<li><a href="">C</a></li>
+						<li><a href="">D</a></li>
+						<li><a href="">E</a></li>
+					</ul>
+				</div>
+				
+				</article>
+				</div>
+				<div class="rightPane">
+				<!--Owner Profile-->
+				<div class="verticleSplitter"></div>
+				<article>
+					<h1>Owner</h1>
+					<img class="portrait" src="./imgs/quan_portrait.png" alt="Quan Shi"/>
+					<div><a href="mailto:quan.shi@volvo.com">Quan Shi</a></div>
+				</article>
+				<article>
+					<h1>Evaluator</h1>
+					<img class="portrait" src="./imgs/alex_portrait.png" alt="Alex Liu"/>
+					<div><a href="mailto:alex.liu@volvo.com">Alex Liu</a></div>
+				</article>
+				</div>
+				<div class="footerPane">
+				<!--Interested member list-->
+				<div class="horizentalSplitter"></div>
+				<article>
+					<a href="mailto:eric.zhang@consultant.volvo.com"><div class="portraitSmall" style="background-image: url(./imgs/eric_portrait.png);"></div></a>
+					<a href="javascript:void(0);" onclick="alert('This will add the current logon user to the follower list.');"><div class="portraitSmall plusMe"></div></a>
+					<a href="mailto:quan.shi@volvo.com, alex.liu@volvo.com, eric.zhang@consultant.volvo.com?subject=[TDCC Topic] Let's talk about your TDCC topic: Zencoding introduction."><div class="portraitSmall groupMail"></div></a>
+				</article>
+				</div>
+			</div>
+			<!--2-->
+			<div class="topic mainPane invisible">
+				<div class="leftPane">
+				<!--Main content-->
+				<article>
+				<h1>Topic: NVS Integration Library Introduction.</h1>
+				<img src="./imgs/nvs_integration.png" alt="NVS Integration Library" width="300" height="400" style="border: 1px dashed gray; float: left; padding: 5px; margin: 10px;"/>
+				<q cite="https://teamplace.volvo.com/sites/volvoit-dotNET/WebPartLib/NVSWebPage.aspx"><p>NVS Integration Library is ...</p></q>
+				<cite>(See <a href="https://teamplace.volvo.com/sites/volvoit-dotNET/WebPartLib/NVSWebPage.aspx">NVS home</a>)</cite>
+				<div style="clear:both;"></div>
+				<div>
+					<h2>Useful References:</h2>
+					<ul>
+						<li><a href="https://teamplace.volvo.com/sites/volvoit-dotNET/WebPartLib/NVSWebPage.aspx">NVS</a></li>
+						<li><a href="">B</a></li>
+						<li><a href="">C</a></li>
+						<li><a href="">D</a></li>
+						<li><a href="">E</a></li>
+					</ul>
+				</div>
+				
+				<div style="clear:both;"></div>
+				</article>
+				</div>
+				<div class="rightPane">
+				<!--Owner Profile-->
+				<div class="verticleSplitter"></div>
+				<article>
+					<h1>Owner</h1>
+					<img class="portrait" src="./imgs/alex_portrait.png" alt="Alex Liu"/>
+					<div><a href="mailto:alex.liu@volvo.com">Alex Liu</a></div>
+				</article>
+				<article>
+					<h1>Evaluator</h1>
+					<img class="portrait" src="./imgs/eric_portrait.png" alt="Eric Zhang"/>
+					<div><a href="mailto:eric.zhang@consultant.volvo.com">Eric Zhang</a></div>
+				</article>
+				</div>
+				<div class="footerPane">
+				<!--Interested member list-->
+				<div class="horizentalSplitter"></div>
+				<article>
+					<a href="mailto:quan.shi@volvo.com"><div class="portraitSmall" style="background-image: url(./imgs/quan_portrait.png);"></div></a>
+					<a href="javascript:void(0);" onclick="alert('This will add the current logon user to the follower list.');"><div class="portraitSmall plusMe"></div></a>
+					<a href="mailto:alex.liu@volvo.com, eric.zhang@consultant.volvo.com, quan.shi@volvo.com?subject=[TDCC Topic] Let's talk about your TDCC topic: NVS Integration Library Introduction."><div class="portraitSmall groupMail"></div></a>
+				</article>
+				</div>
+			</div>
+			<!--3-->
+			<div class="topic mainPane invisible">
+				<div class="leftPane">
+				<!--Main content-->
+				<article>
+				<h1>Topic: Responsive web design introduction.</h1>
+				<img src="./imgs/responsive_web.png" alt="Responsive Web" width="300" height="400" style="border: 1px dashed gray; float: left; padding: 5px; margin: 10px;"/>
+				<q cite="http://en.wikipedia.org/wiki/Responsive_web_design"><p>Responsive web design (RWD) is an approach to web design aimed at crafting sites to provide an optimal viewing experience—easy reading and navigation with a minimum of resizing, panning, and scrolling—across a wide range of devices (from desktop computer monitors to mobile phones).</p></q>
+				<cite>(See <a href="http://en.wikipedia.org/wiki/Responsive_web_design">Wikipedia - Responsive web design</a>)</cite>
+				<div style="clear:both;"></div>
+				<div>
+					<h2>Useful References:</h2>
+					<ul>
+						<li><a href="http://en.wikipedia.org/wiki/Responsive_web_design">Wikipedia - Responsive web design</a></li>
+						<li><a href="http://alistapart.com/article/responsive-web-design">Responsive Web Design</a></li>
+						<li><a href="">C</a></li>
+						<li><a href="">D</a></li>
+						<li><a href="">E</a></li>
+					</ul>
+				</div>
+				
+				<div style="clear:both;"></div>
+				</article>
+				</div>
+				<div class="rightPane">
+				<!--Owner Profile-->
+				<div class="verticleSplitter"></div>
+				<article>
+					<h1>Owner</h1>
+					<img class="portrait" src="./imgs/eric_portrait.png" alt="Eric Zhang"/>
+					<div><a href="mailto:eric.zhang@consultant.volvo.com">Eric Zhang</a></div>
+				</article>
+				<article>
+					<h1>Evaluator</h1>
+					<img class="portrait" src="./imgs/plusMe.png" alt=""/>
+					<div><a href="javascript:void(0);" onclick="alert('This will register the current logon user as evaluator.');">Register as Evaluator...</a></div>
+				</article>
+				</div>
+				<div class="footerPane">
+				<!--Interested member list-->
+				<div class="horizentalSplitter"></div>
+				<article>
+					<a href="mailto:alex.liu@volvo.com"><div class="portraitSmall" style="background-image: url(./imgs/alex_portrait.png);"></div></a>
+					<a href="mailto:quan.shi@volvo.com"><div class="portraitSmall" style="background-image: url(./imgs/quan_portrait.png);"></div></a>
+					<a href="javascript:void(0);" onclick="alert('This will add the current logon user to the follower list.');"><div class="portraitSmall plusMe"></div></a>
+					<a href="mailto:alex.liu@volvo.com, eric.zhang@consultant.volvo.com, quan.shi@volvo.com?subject=[TDCC Topic] Let's talk about your TDCC topic: NVS Integration Library Introduction."><div class="portraitSmall groupMail"></div></a>
+				</article>
+				</div>
+			</div>

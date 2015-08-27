@@ -1,0 +1,279 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Mandelbrot Set</title>
+	<style type="text/css">
+	body {
+		margin: 0px;
+		padding: 0px;
+	}
+	
+	#main {
+		width: 100%;
+		height: 100%;
+	}
+	
+	#c1 {
+		width: 800px;
+		height: 800px;
+		background-color: black;
+		border: 1px solid gray;
+	}
+	
+	#info {
+		width: 100%;
+		height: 2.5em;
+		border: 1px solid gray;
+		
+		font-size: 1.5em;
+		font-weight: bold;
+	}
+	
+	button {
+		height: 3em;
+		font-size: 2em;
+	}
+	
+	#toolbar {
+		padding: 20px;
+	}
+	</style>
+	<script type="text/javascript">
+<!--
+var renderCanvas = function(gl, program, max) {
+	document.querySelector('#info').innerHTML = ('~~' + max);
+	
+	var positionLocation = gl.getAttribLocation(program, 'a_position');
+	
+	var buffer = gl.createBuffer();
+	
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+	
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+		-1.0, -1.0,
+		1.0, -1.0,
+		-1.0, 1.0,
+		-1.0, 1.0,
+		1.0, -1.0,
+		1.0, 1.0
+	]), gl.STATIC_DRAW);
+	
+	gl.enableVertexAttribArray(positionLocation);
+	
+	var maxLocation = gl.getUniformLocation(program, "u_max");
+	gl.uniform2f(maxLocation, max, 0);
+	
+	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+	
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
+};
+
+var canvas = null;
+var gl = null;
+var program = null;
+var isPause = true;
+var step = 1, idx = 1;
+var N = 40;
+
+window.addEventListener('DOMContentLoaded', function() {
+	canvas = canvas || document.querySelector('#c1');
+	
+	var realToCSSPixels = window.devicePixelRatio || 1;
+	
+	var displayWidth  = Math.floor(canvas.clientWidth  * realToCSSPixels);
+    var displayHeight = Math.floor(canvas.clientHeight * realToCSSPixels);
+    
+    canvas.width  = displayWidth;
+    canvas.height = displayHeight;
+	
+	gl = gl || canvas.getContext('experimental-webgl');
+	
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+	
+	var vertex = document.querySelector('#vertexShader').innerHTML;
+	var fragment = document.querySelector('#fragmentShader').innerHTML;
+	
+	var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+	
+	gl.shaderSource(vertexShader, vertex);
+	
+	gl.compileShader(vertexShader);
+	
+	var compiled = gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS);
+	
+	if(!compiled) {
+		var lastError = gl.getShaderInfoLog(vertexShader);
+		
+		alert(lastError);
+		
+		gl.deleteShader(vertexShader);
+	}
+	
+	var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+	
+	gl.shaderSource(fragmentShader, fragment);
+	
+	gl.compileShader(fragmentShader);
+	
+	var compiled = gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS);
+	
+	if(!compiled) {
+		var lastError = gl.getShaderInfoLog(fragmentShader);
+		
+		alert(lastError);
+		
+		gl.deleteShader(fragmentShader);
+		
+		return;
+	}
+	
+	program = program || gl.createProgram();
+	
+	gl.attachShader(program, vertexShader);
+	gl.attachShader(program, fragmentShader);
+	
+	gl.linkProgram(program);
+	
+	var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+	
+	if(!linked) {
+		var lastError = gl.getProgramInfoLog(program);
+		
+		alert(lastError);
+		
+		gl.deleteProgram(program);
+		
+		return;
+	}
+	
+	gl.useProgram(program);
+	
+	document.querySelector('#pause').addEventListener('click', function() {
+		isPause = !isPause;
+		
+		if(isPause) {
+			document.querySelector('#pause').innerHTML = 'Resume';
+		} else {
+			document.querySelector('#pause').innerHTML = 'Pause';
+		}
+		
+	}, false);
+	
+	document.querySelector('#forward').addEventListener('click', function() {
+		if(idx < N) {
+			step = +1;
+			renderCanvas(gl, program, (idx = idx + step));
+		}
+	}, false);
+	
+	document.querySelector('#backward').addEventListener('click', function() {
+		if(idx >= 1) {
+			step = -1;
+			renderCanvas(gl, program, (idx = idx + step));
+		}
+	}, false);
+	
+//*
+	setInterval(function() {
+		if(!isPause) {
+			renderCanvas(gl, program, (idx = idx + step));
+			
+			if(idx > N) {
+				step = -1;
+			} else if(idx <= 0) {
+				step = 1;
+			}
+		}
+	}, 10);
+//*/
+}, false);
+-->
+	</script>
+	
+	<script type="x-shader/x-vertex" id="vertexShader">
+	attribute vec2 a_position;
+	
+	varying vec4 vVertexPosition;
+ 
+	void main() {
+	  vVertexPosition = vec4(a_position, 0, 1);
+	  gl_Position = vec4(a_position, 0, 1);
+	}
+	</script>
+	
+	<script type="x-shader/x-fragment" id="fragmentShader">
+	precision mediump float;
+	
+	varying vec4 vVertexPosition;
+	
+	uniform vec2 u_max;
+	
+	const int MAX = 1000;
+
+	void main() {
+		float cx = vVertexPosition.x, cy = vVertexPosition.y;
+		
+		float zx = 0.0, zy = 0.0, tmp = 0.0;
+		
+		int count = 0;
+		
+		for(int i = 0; i < MAX; ++i) {
+			if(i >= int(u_max.x)) {
+				break;
+			}
+			
+			tmp = zx * zx - zy * zy + cx;
+				
+			zy = 2.0 * zx * zy + cy;
+			
+			zx = tmp;
+			
+			++count;
+		}
+		gl_FragColor = vec4(zx, zy, 0, 1);
+		
+		//gl_FragColor = vec4(sqrt((zx) * (zx) + (zy) * (zy)), 0, 0, 1);
+		
+		//gl_FragColor = vec4(mod(float(count), 255.0), 0, 0, 1);
+	}
+ 
+	void mainx() {
+		const int MAX = 1000;
+		
+		float cx = vVertexPosition.x, cy = vVertexPosition.y;
+		
+		float dx = 0.0, dy = 0.0, tmp = 0.0;
+		
+		int count = 0;
+		
+		for(int i = 0; i < MAX; ++i) {
+			tmp = dx * dx - dy * dy + cx;
+				
+			dy = 2.0 * dx * dy + cy;
+			
+			dx = tmp;
+				
+			if(sqrt((dx) * (dx) + (dy) * (dy)) > 2.0) {
+				break;
+			}
+			
+			++count;
+		}
+		
+		if(count >= MAX) {
+			gl_FragColor = vec4(1, 0, 0, 1);
+		} else {
+			gl_FragColor = vec4(mod(float(count), 255.0), 0, 0, 1);
+		}
+	}
+	</script>
+</head>
+<body>
+	<div id="main">
+		<div id="toolbar"><button id="pause">Start</button><button id="forward">Step forward</button><button id="backward">Step backward</button></div>
+		<div id="info"></div>
+		<canvas id="c1"></canvas>
+	</div>
+</body>
+</html>

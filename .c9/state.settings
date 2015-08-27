@@ -1,0 +1,171 @@
+{
+    "ace": {
+        "search": {
+            "@backwards": "false",
+            "@highlightmatches": "true",
+            "@matchcase": "false",
+            "@preservecase": "false",
+            "@regex": "false",
+            "@wholeword": "false",
+            "@wraparound": "true"
+        }
+    },
+    "console": {
+        "@expanded": true,
+        "@height": 183,
+        "@maximized": "false",
+        "json()": {
+            "meta": {
+                "accessList": [
+                    "tab5"
+                ]
+            },
+            "name": "pane1",
+            "nodes": [
+                {
+                    "type": "tab",
+                    "name": "tab5",
+                    "path": "",
+                    "className": [
+                        "tab5",
+                        "focus"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1440402773058
+                        },
+                        "filter": true,
+                        "title": "node - \"sqop05\"",
+                        "tooltip": "node - \"sqop05\"",
+                        "terminal": {
+                            "id": "devel_774",
+                            "cwd": "",
+                            "width": 1586,
+                            "height": 157
+                        }
+                    },
+                    "editorType": "terminal",
+                    "active": true
+                }
+            ],
+            "skin": "editor_tab",
+            "skinset": "default",
+            "type": "pane"
+        }
+    },
+    "ext": {
+        "counters": {
+            "@ace": 1,
+            "@acestatus": 1,
+            "@datagrid": 1,
+            "@divider": 1,
+            "@document": 1,
+            "@form": 4,
+            "@immediate": 1,
+            "@menu": 3,
+            "@menuitem": 6,
+            "@pane": 3,
+            "@preferences": 1,
+            "@session": 1,
+            "@tab": 2,
+            "@undoManager": 1,
+            "@welcome": 1
+        }
+    },
+    "findinfiles": {
+        "@console": "true",
+        "@matchcase": "false",
+        "@regex": "false",
+        "@wholeword": "false"
+    },
+    "installer": {
+        "json()": {}
+    },
+    "menus": {
+        "@minimized": false
+    },
+    "nak": {
+        "@installed": true
+    },
+    "openfiles": {
+        "@hidetree": false
+    },
+    "panecycle": {
+        "json()": [
+            "tab5"
+        ]
+    },
+    "panels": {
+        "@active-left": "tree",
+        "@active-right": "none",
+        "@width-left": 236,
+        "commands.panel": {
+            "@enabled": "false",
+            "@name": "commands.panel"
+        },
+        "debugger": {
+            "@enabled": "false",
+            "@name": "debugger"
+        },
+        "git.status": {
+            "@enabled": "false",
+            "@name": "git.status"
+        },
+        "navigate": {
+            "@enabled": "false",
+            "@name": "navigate"
+        },
+        "outline": {
+            "@enabled": "false",
+            "@name": "outline"
+        },
+        "tree": {
+            "@enabled": "true",
+            "@name": "tree"
+        }
+    },
+    "projecttree": {
+        "@scrollpos": -10,
+        "@showfs": true,
+        "expanded": {
+            "json()": [
+                "/",
+                "/public/media"
+            ]
+        }
+    },
+    "recentfiles": {
+        "json()": []
+    },
+    "search-history": {
+        "replace": {
+            "json()": [
+                "Graph"
+            ]
+        },
+        "search": {
+            "json()": [
+                "GraphJS"
+            ]
+        }
+    },
+    "tabs": {
+        "json()": {
+            "focus": "tab5",
+            "meta": {
+                "accessList": []
+            },
+            "name": "pane0",
+            "nodes": [],
+            "skin": "editor_tab",
+            "skinset": "default",
+            "type": "pane"
+        }
+    },
+    "tree_selection": {
+        "json()": [
+            "/"
+        ]
+    }
+}

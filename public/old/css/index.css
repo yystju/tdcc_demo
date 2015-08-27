@@ -1,0 +1,323 @@
+﻿html, document, body {
+	padding: 0px;
+	margin: 0px;
+}
+
+#content {
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background-color: #eee;
+	z-index: 0;
+	
+	overflow: auto;
+}
+
+.topic > img {
+	border: 1px dashed gray; 
+	float: left; 
+	padding: 5px; 
+	margin: 10px;
+}
+
+#floatPaneBackground {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background-color: gray;
+	z-index: 50;
+	
+	opacity: 0.8;
+}
+
+#floatPane {
+	position: fixed;
+	
+	width: 100%; 
+	height: 640px;
+	
+	margin-top: -320px;
+	
+	top: 50%;
+	
+	background-color: white;
+
+	z-index: 100;
+	
+	opacity: 1.0;
+}
+
+.paneWrapper {
+	position: relative;
+	
+	margin-top:0; 
+	margin-right:auto; 
+	margin-bottom:0; 
+	margin-left:auto;
+	
+	width: 80%;
+	height: 100%;
+}
+
+.paneWrapper:after {
+	clear: both;
+}
+
+.leftScrollPane {
+	position: absolute;
+	
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	width: 50px;
+	
+	text-align: left;
+	cursor: pointer;
+	
+	border-right: 1px dotted #800000;
+}
+
+.mainPane {
+	position: absolute;
+	
+	top: 0px;
+	bottom: 0px;
+	left: 50px;
+	right: 50px;
+}
+
+.rightScrollPane {
+	position: absolute;
+	
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	width: 50px;
+	
+	text-align: right;
+	cursor: pointer;
+	
+	border-left: 1px dotted #800000;
+}
+
+.leftPane {
+	position: absolute;
+	
+	top: 0px;
+	bottom: 120px;
+	left: 0px;
+	right: 240px;
+	
+	overflow: auto;
+}
+
+.rightPane {
+	position: absolute;
+	
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	width: 240px;
+	
+	overflow-y: auto;
+}
+
+.footerPane {
+	position: absolute;
+	
+	bottom: 0px;
+	left: 0px;
+	right: 240px;
+	height: 120px;
+}
+
+article {
+	margin: 10px;
+}
+
+p {
+	margin: 10px;
+}
+
+.debug {
+	border: 1px solid red;
+}
+
+q {
+	quotes: '“' '”' '‘' '’';
+}
+
+q:before {
+	content: open-quote;
+}
+
+q:after {
+	content: close-quote;
+}
+
+.horizentalSplitter {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	margin-left: 10px;
+	margin-right: 10px;
+	
+	border-top: 2px dashed #CFCFCF;
+}
+
+.verticleSplitter {
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	
+	border-left: 2px dashed #CFCFCF;
+}
+
+img.portrait {
+	width: 150px;
+	height: 200px;
+}
+
+div.portraitSmall {
+	width: 75px;
+	height: 100px;
+	display: inline-block;
+	background-size: 75px 100px;
+}
+
+div.plusMe {
+	border: 1px dashed #CFCFCF;
+	border-radius: 10px;
+	background-position: center;
+	background-size: 75px 75px !important;
+	background-repeat: no-repeat;
+	background-image: url(../imgs/plusMe.png);
+}
+
+div.groupMail {
+	border: 1px dashed #CFCFCF;
+	border-radius: 10px;
+	background-position: center;
+	background-size: 75px 75px !important;
+	background-repeat: no-repeat;
+	background-image: url(../imgs/groupMail.png);
+}
+
+#takPicturePaneBackground {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background-color: gray;
+	z-index: 50;
+	
+	opacity: 0.8;
+}
+
+#takePicturePane {
+	position: fixed;
+	
+	width: 100%; 
+	height: 640px;
+	
+	margin-top: -320px;
+	
+	top: 50%;
+	
+	background-color: white;
+
+	z-index: 100;
+	
+	opacity: 1.0;
+}
+
+#pictureCanvasWrapper {
+	text-align: center;
+}
+
+#pictureCanvas {
+	position: relative;
+	
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
+	
+	padding: 10px;
+	border: 1px dashed #CFCFCF;
+	
+	width: 300px;
+	height: 400px;
+}
+
+#capturePicturePaneBackground {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background-color: gray;
+	z-index: 150;
+	
+	opacity: 0.8;
+}
+
+#capturePicturePane {
+	position: fixed;
+	
+	width: 100%; 
+	height: 640px;
+	
+	margin-top: -320px;
+	
+	top: 50%;
+	
+	background-color: white;
+
+	z-index: 200;
+	
+	opacity: 1.0;
+	
+	text-align: center;
+}
+
+#pictureVideo {
+	display: block;
+	
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
+	
+	padding: 10px;
+	border: 1px dashed #CFCFCF;
+	
+	width: 640px;
+	height: 480px;
+}
+
+.invisible {
+	display: none;
+}
+
+.template {
+	display: none;
+}
+
+.draggedover {
+	border: 5px solid black !important;
+}
+
+.topicShowImage {
+	border: 1px dashed gray; 
+	float: left;
+	padding: 5px;
+	margin: 10px;
+}
