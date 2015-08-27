@@ -36,8 +36,8 @@
                             "timestamp": 1440402773058
                         },
                         "filter": true,
-                        "title": "node - \"sqop05\"",
-                        "tooltip": "node - \"sqop05\"",
+                        "title": "bash - \"sqop05\"",
+                        "tooltip": "bash - \"sqop05\"",
                         "terminal": {
                             "id": "devel_774",
                             "cwd": "",
