@@ -19,8 +19,6 @@
 	        top: 0px;
 	        bottom: 0px;
 	        
-	        
-	        
 	        z-index: -100;
 	    }
 	    
@@ -56,16 +54,27 @@
 	    #calendar {
 	        position: absolute;
 	        
-	        margin-top: 50px;
+	        margin-top: 70px;
 	        
-	        width: 30%;
+	        width: 25%;
 	        top: 0px;
 	        bottom: 0px;
 	        right: 0px;
 	    }
 	    
 	    #mails {
-	        font-size: 1.5em;
+	        font-size: 0.8em;
+	        
+	        opacity: 0.3;
+            filter: alpha(opacity=30);
+            
+            color: 1px solid #BB44BB;
+	        border: 1px solid #BB44BB;
+	    }
+	    
+	    #mails:hover {
+	    	opacity: 1.0;
+            filter: alpha(opacity=100);
 	    }
 	    
 	    #todo {
@@ -144,7 +153,6 @@
             	<ul>
             		<li>RE: PROD environment is down!</li>
             		<li>Have you eaten today?</li>
-            		<li>Where is my pen?</li>
             	</ul>
             </fieldset>
     	</aside>
