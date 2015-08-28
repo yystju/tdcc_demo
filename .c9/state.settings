@@ -12,7 +12,7 @@
     },
     "console": {
         "@expanded": true,
-        "@height": 183,
+        "@height": 278,
         "@maximized": "false",
         "json()": {
             "meta": {
@@ -36,13 +36,13 @@
                             "timestamp": 1440402773058
                         },
                         "filter": true,
-                        "title": "bash - \"sqop05\"",
-                        "tooltip": "bash - \"sqop05\"",
+                        "title": "node - \"sqop05\"",
+                        "tooltip": "node - \"sqop05\"",
                         "terminal": {
                             "id": "devel_774",
                             "cwd": "",
                             "width": 1586,
-                            "height": 157
+                            "height": 252
                         }
                     },
                     "editorType": "terminal",
@@ -68,7 +68,7 @@
             "@pane": 3,
             "@preferences": 1,
             "@session": 1,
-            "@tab": 2,
+            "@tab": 1,
             "@undoManager": 1,
             "@welcome": 1
         }
@@ -131,7 +131,8 @@
         "expanded": {
             "json()": [
                 "/",
-                "/public/media"
+                "/public/chart",
+                "/public/chart/chartjs"
             ]
         }
     },
@@ -164,8 +165,6 @@
         }
     },
     "tree_selection": {
-        "json()": [
-            "/"
-        ]
+        "json()": []
     }
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+ <script type="text/javascript" src="./canvasjs.min.js"></script>
+<script type="text/javascript">
+window.onload = function () {
+	var data1 = [
+		{y: 5, label: "Sweden"  },
+		{y: 6, label: "Taiwan"  },
+		{y: 7, label: "Russia"  },
+		{y: 8, label: "Spain"  },
+		{y: 8, label: "Brazil"  },
+		{y: 8, label: "India"  },
+		{y: 9, label: "Italy"  },
+		{y: 9, label: "Australia"  },
+		{y: 12, label: "Canada"  },
+		{y: 13, label: "South Korea"  },
+		{y: 13, label: "Netherlands"  },
+		{y: 15, label: "Switzerland"  },
+		{y: 28, label: "Britain" },
+		{y: 32, label: "Germany"   },
+		{y: 32, label: "France"  },
+		{y: 68, label: "Japan"   },
+		{y: 73, label: "China"},
+		{y: 132, label: "US" }
+	];
+	
+	var data2 = [
+		{ label: "apple",  y: 10  },
+		{ label: "orange", y: 15  },
+		{ label: "banana", y: 25  },
+		{ label: "mango",  y: 30  },
+		{ label: "grape",  y: 28  }
+	];
+
+	var chart = new CanvasJS.Chart("chartContainer", {
+		theme: "theme2",//theme1
+		title:{
+			text: "Basic Column Chart - CanvasJS"              
+		},
+		animationEnabled: true,   // change to true
+		data: [{
+				// Change type to "bar", "splineArea", "area", "spline", "pie",etc.
+				type: "column",
+				dataPoints: data1
+			}
+		]
+	});
+	chart.render();
+	
+	chart = new CanvasJS.Chart("chartContainer2", {
+			title:{
+				text:"Fortune Global 500 Companies by Country"				
+
+			},
+            animationEnabled: true,
+			axisX:{
+				interval: 1,
+				gridThickness: 0,
+				labelFontSize: 10,
+				labelFontStyle: "normal",
+				labelFontWeight: "normal",
+				labelFontFamily: "Lucida Sans Unicode"
+
+			},
+			axisY2:{
+				interlacedColor: "rgba(1,77,101,.2)",
+				gridColor: "rgba(1,77,101,.1)"
+
+			},
+
+			data: [{     
+				type: "bar",
+                name: "companies",
+				axisYType: "secondary",
+				color: "#014D65",				
+				dataPoints: data1
+			}]
+		});
+
+chart.render();
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+</body>
+</html>

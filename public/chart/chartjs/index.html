@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name = "viewport" content = "initial-scale = 1, user-scalable = no">
+	<title>ChartJS Test</title>
+	<style type="text/css">
+		#c1 {
+			width: 360px;
+			height: 360px;
+		}
+		
+		#wrapper {
+			width: 360px; 
+			height: 360px;
+		}
+		
+		#wrapper:hover {
+			background-color: #EE8866;
+		}
+	</style>
+	<script type="text/javascript" src="./Chart.min.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<canvas id="c1"></canvas>
+	</div>
+	<script type="text/javascript">
+		var radarChartData = {
+			labels: ['Inteligence', 'Agility', 'Strength', 'Height', 'Weight', 'Age'],
+			datasets: [
+				{
+					label: 'Quan Shi <quan.shi@volvo.com>',
+					fillColor: 'rgba(220,220,220,0.2)',
+					strokeColor: 'rgba(220,220,220,1)',
+					pointColor: 'rgba(220,220,220,1)',
+					pointStrokeColor: '#fff',
+					pointHighlightFill: '#fff',
+					pointHighlightStroke: 'rgba(220,220,220,1)',
+					data: [80,60,62,60,75,50]
+				}
+			]
+		};
+		window.addEventListener('DOMContentLoaded', function() {
+			var chart = new Chart(document.querySelector('#c1').getContext('2d')).Radar(radarChartData, {
+				responsive: true
+			});
+		}, false);
+	</script>
+</body>
+</html>
