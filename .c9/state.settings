@@ -59,17 +59,17 @@
             "@ace": 1,
             "@acestatus": 1,
             "@datagrid": 1,
-            "@divider": 1,
-            "@document": 1,
+            "@divider": 4,
+            "@document": 2,
             "@form": 4,
             "@immediate": 1,
-            "@menu": 3,
-            "@menuitem": 6,
+            "@menu": 5,
+            "@menuitem": 13,
             "@pane": 3,
             "@preferences": 1,
-            "@session": 1,
-            "@tab": 1,
-            "@undoManager": 1,
+            "@session": 2,
+            "@tab": 5,
+            "@undoManager": 2,
             "@welcome": 1
         }
     },
@@ -93,7 +93,8 @@
     },
     "panecycle": {
         "json()": [
-            "tab5"
+            "tab5",
+            "tab4"
         ]
     },
     "panels": {
@@ -131,8 +132,8 @@
         "expanded": {
             "json()": [
                 "/",
-                "/public/chart",
-                "/public/chart/chartjs"
+                "/public",
+                "/public/form"
             ]
         }
     },
@@ -153,18 +154,44 @@
     },
     "tabs": {
         "json()": {
-            "focus": "tab5",
+            "focus": "/public/form/index.html",
             "meta": {
-                "accessList": []
+                "accessList": [
+                    "tab4"
+                ]
             },
             "name": "pane0",
-            "nodes": [],
+            "nodes": [
+                {
+                    "type": "tab",
+                    "name": "tab4",
+                    "path": "/public/form/index.html",
+                    "className": [
+                        "tab4",
+                        "focus"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1440726217000
+                        },
+                        "filter": true,
+                        "title": "index.html",
+                        "tooltip": "/public/form/index.html",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": true
+                }
+            ],
             "skin": "editor_tab",
             "skinset": "default",
             "type": "pane"
         }
     },
     "tree_selection": {
-        "json()": []
+        "json()": [
+            "/"
+        ]
     }
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Form Element Test</title>
+	<style type="text/css">
+	/*input:required:invalid, input:focus:invalid {*/
+	    /*border: 2px solid red;*/
+	/*    -moz-box-shadow: none;*/
+	/*}*/
+	
+	/*input:required:valid {*/
+	    
+	/*}*/
+	
+    /*input:required:invalid, input:focus:invalid {*/
+    /*    background-image: url(./images/invalid.png);*/
+    /*    background-position: right top;*/
+    /*    background-repeat: no-repeat;*/
+    /*}*/
+    
+    /*input:required:valid {*/
+    /*    background-image: url(./images/valid.png);*/
+    /*    background-position: right top;*/
+    /*    background-repeat: no-repeat;*/
+    /*}*/
+	
+	input {
+        width: 100%;
+    }
+	
+	input:required:invalid, input:focus:invalid {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAeVJREFUeNqkU01oE1EQ/mazSTdRmqSxLVSJVKU9RYoHD8WfHr16kh5EFA8eSy6hXrwUPBSKZ6E9V1CU4tGf0DZWDEQrGkhprRDbCvlpavan3ezu+LLSUnADLZnHwHvzmJlvvpkhZkY7IqFNaTuAfPhhP/8Uo87SGSaDsP27hgYM/lUpy6lHdqsAtM+BPfvqKp3ufYKwcgmWCug6oKmrrG3PoaqngWjdd/922hOBs5C/jJA6x7AiUt8VYVUAVQXXShfIqCYRMZO8/N1N+B8H1sOUwivpSUSVCJ2MAjtVwBAIdv+AQkHQqbOgc+fBvorjyQENDcch16/BtkQdAlC4E6jrYHGgGU18Io3gmhzJuwub6/fQJYNi/YBpCifhbDaAPXFvCBVxXbvfbNGFeN8DkjogWAd8DljV3KRutcEAeHMN/HXZ4p9bhncJHCyhNx52R0Kv/XNuQvYBnM+CP7xddXL5KaJw0TMAF8qjnMvegeK/SLHubhpKDKIrJDlvXoMX3y9xcSMZyBQ+tpyk5hzsa2Ns7LGdfWdbL6fZvHn92d7dgROH/730YBLtiZmEdGPkFnhX4kxmjVe2xgPfCtrRd6GHRtEh9zsL8xVe+pwSzj+OtwvletZZ/wLeKD71L+ZeHHWZ/gowABkp7AwwnEjFAAAAAElFTkSuQmCC);
+        background-position: right top;
+        background-repeat: no-repeat;
+        -moz-box-shadow: none;
+    }
+    
+    input:required:valid {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAepJREFUeNrEk79PFEEUx9/uDDd7v/AAQQnEQokmJCRGwc7/QeM/YGVxsZJQYI/EhCChICYmUJigNBSGzobQaI5SaYRw6imne0d2D/bYmZ3dGd+YQKEHYiyc5GUyb3Y+77vfeWNpreFfhvXfAWAAJtbKi7dff1rWK9vPHx3mThP2Iaipk5EzTg8Qmru38H7izmkFHAF4WH1R52654PR0Oamzj2dKxYt/Bbg1OPZuY3d9aU82VGem/5LtnJscLxWzfzRxaWNqWJP0XUadIbSzu5DuvUJpzq7sfYBKsP1GJeLB+PWpt8cCXm4+2+zLXx4guKiLXWA2Nc5ChOuacMEPv20FkT+dIawyenVi5VcAbcigWzXLeNiDRCdwId0LFm5IUMBIBgrp8wOEsFlfeCGm23/zoBZWn9a4C314A1nCoM1OAVccuGyCkPs/P+pIdVIOkG9pIh6YlyqCrwhRKD3GygK9PUBImIQQxRi4b2O+JcCLg8+e8NZiLVEygwCrWpYF0jQJziYU/ho2TUuCPTn8hHcQNuZy1/94sAMOzQHDeqaij7Cd8Dt8CatGhX3iWxgtFW/m29pnUjR7TSQcRCIAVW1FSr6KAVYdi+5Pj8yunviYHq7f72po3Y9dbi7CxzDO1+duzCXH9cEPAQYAhJELY/AqBtwAAAAASUVORK5CYII=);
+        background-position: right top;
+        background-repeat: no-repeat;
+    }
+    
+    #form1Wrapper, #form1Table {
+        width: 640px;
+    }
+
+    .lableWrapper {
+    	width: 20%;
+    	text-align: right;
+    }
+	</style>
+</head>
+<body>
+	<form action="#" id="form1">
+		<fieldset id="form1Wrapper">
+  			<legend>Sign Up:</legend>
+			<table id="form1Table">
+			    <tr>
+			        <td class="lableWrapper"><label for="name">Your Name:</label></td><td><input type="text" id="name" name="name" required placeholder="Please enter your name here" /></td>
+			    </tr>
+			    <tr>
+			        <td class="lableWrapper"><label for="email">Email Address:</label></td><td><input type="email" id="email" name="email" required placeholder="Please enter a valid email address"/></td>
+			    </tr>
+			    <tr>
+			        <td class="lableWrapper"><label for="website">Web Site:</label></td><td><input type="url" id="website" name="website" required pattern="https?://.+" placeholder="Please enter a valid http:// or https:// URL" /></td>
+			    </tr>
+			    <tr>
+			        <td class="lableWrapper"><label for="age">Age:</label></td><td><input type="number" id="age" size="6" name="age" min="18" max="99" value="21" /></td>
+			    </tr>
+			    <tr>
+			        <td class="lableWrapper"><label for="satisfaction">Satisfaction:</label></td><td><input type="range" id="satisfaction" size="2" name="satisfaction" min="1" max="5" value="3" /></td>
+			    </tr>
+			    <tr>
+			        <td class="lableWrapper"><label for="job">Your Job Title:</label></td><td><input type="text" id="job" name="job" list="jobtitles" placeholder="Please choose or enter your job title here" required /></td>
+			    </tr>
+			    <tr>
+			        <td class="lableWrapper" colspan="2"><input type="submit" value="GO~" /></td>
+			    </tr>
+			</table>
+		</fieldset>
+	</form>
+	
+	<datalist id="jobtitles">
+		<option value="Application Developer">
+		<option value="Tester">
+		<option value="Test Manager">
+		<option value="Business Analysis">
+		<option value="Software Architect">
+	</datalist>
+	
+	<details>
+		<summary>End User Agreement</summary>
+		<p>A) The user agree to give all his/her current private property to the web site owner permarnently.</p>
+		<p>B) The user agree to give all his/her private property made in the future to the web site owner permarnently.</p>
+	</details>
+</body>
+</html>
