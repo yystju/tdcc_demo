@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Media Test -- WebCam</title>
+	<style type="text/css">
+	    html, document, body {
+	        margin: 0px;
+	        padding: 0px;
+	    }
+	
+	    #v1 {
+	        width: 100%;
+	        height: 100%;
+	        
+	        position: absolute;
+	        left: 0px;
+	        right: 0px;
+	        top: 0px;
+	        bottom: 0px;
+	        
+	        
+	        
+	        z-index: -100;
+	    }
+	    
+	    #overall {
+	        position: absolute;
+	        left: 0px;
+	        right: 0px;
+	        top: 0px;
+	        bottom: 0px;
+	        
+	        color: #EEEEEE;
+	        
+	        z-index: 100;
+	        
+	        font-size: 2em;
+	    }
+	    
+	    #top {
+	        font-weight: bold;
+	        margin-top: 20px;
+	    }
+	    
+	    #bottom {
+	        position: absolute;
+	        
+	        bottom: 0px;
+	        left: 0px;
+	        right: 0px;
+	        
+	        margin-bottom: 20px;
+	    }
+	    
+	    #calendar {
+	        position: absolute;
+	        
+	        margin-top: 50px;
+	        
+	        width: 30%;
+	        top: 0px;
+	        bottom: 0px;
+	        right: 0px;
+	    }
+	    
+	    #mails {
+	        font-size: 1.5em;
+	    }
+	    
+	    #todo {
+	        color: 1px solid #BB44BB;
+	        
+	        border: 1px solid #BB44BB;
+	        
+	        opacity: 0.3;
+            filter: alpha(opacity=30);
+	    }
+	    
+	    #todo:hover {
+	        opacity: 1.0;
+            filter: alpha(opacity=100);
+	    }
+	    
+	    .news {
+	        color: #888888;
+	        width: 30%;
+	        opacity: 0.8;
+            filter: alpha(opacity=80);
+	    }
+	    
+	    figcaption {
+	        width: 100%;
+	        font-style: italic;
+	        font-size: 0.5em;
+	    }
+	</style>
+	<script type="text/javascript">
+	
+	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+	
+	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	
+	window.addEventListener('DOMContentLoaded', function() {
+        var v1 = document.querySelector('#v1');
+	    
+	    var options = {video: {
+            mandatory: {
+                minWidth: 1280,
+                minHeight: 720
+            }
+        }, audio: false};
+	    
+	    navigator.getUserMedia(options, function(stream) {
+	        console.log('URL := ' + URL.createObjectURL(stream));
+	        
+	        v1.addEventListener('loadedmetadata', function(evt) {
+	            console.log('[loadedmetadata]');
+	        }, false);
+	        
+	        v1.src = URL.createObjectURL(stream);
+	    }, function(err) {
+	        console.dir(err);
+	    });
+	}, false);
+	</script>
+</head>
+<body>
+	<video id="v1" autoplay="autoplay"></video>
+	<article id="overall">
+	    <header id="top">
+    	    <details>
+        		<summary>Top news: Future browsers will be directly integrated into human brain...</summary>
+        		<figure class="news">
+        			<img src="./brain.jpg" width="640" height="480" alt="Brain with Browser." />
+        			<figcaption>The scientists said what you need to do is just drink a bottle of water.</figcaption>
+        		</figure>
+        	</details>
+    	</header>
+    	
+    	<aside id="calendar">
+    	    <fieldset id="mails">
+            	<legend>You mails</legend>
+            	<ul>
+            		<li>RE: PROD environment is down!</li>
+            		<li>Have you eaten today?</li>
+            		<li>Where is my pen?</li>
+            	</ul>
+            </fieldset>
+    	</aside>
+    	
+	    <footer id="bottom">
+    	    <fieldset id="todo">
+            	<legend>TODOs of today</legend>
+            	<ul>
+            		<li>Drink water and then pee...</li>
+            		<li>Eat lunch and then poo...</li>
+            		<li>Go back home before midnight...</li>
+            	</ul>
+            </fieldset>
+        </footer>
+	</article>
+</body>
+</html>
