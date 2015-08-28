@@ -41,7 +41,7 @@
                         "terminal": {
                             "id": "devel_774",
                             "cwd": "",
-                            "width": 1586,
+                            "width": 1094,
                             "height": 157
                         }
                     },
@@ -68,7 +68,7 @@
             "@pane": 3,
             "@preferences": 1,
             "@session": 1,
-            "@tab": 2,
+            "@tab": 1,
             "@undoManager": 1,
             "@welcome": 1
         }
@@ -130,8 +130,7 @@
         "@showfs": true,
         "expanded": {
             "json()": [
-                "/",
-                "/public/media"
+                "/public/canvas"
             ]
         }
     },
@@ -165,7 +164,7 @@
     },
     "tree_selection": {
         "json()": [
-            "/"
+            "/public/canvas/css"
         ]
     }
 }
