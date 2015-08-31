@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Geolocation Recorder</title>
+	<style type="text/css">
+	    .show {
+	        border: 1px solid red;
+	    }
+	</style>
+</head>
+<body>
+    <div><button id="start">Start</button><button id="stop" disabled="disabled">Stop</button></div>
+    <div id="show"></div>
+	<script type="text/javascript">
+	window.addEventListener('DOMContentLoaded', function() {
+	    
+		var show = document.querySelector('#show');
+		
+		var watchID = null;
+		
+		document.querySelector('#start').addEventListener('click', function() {
+		    document.querySelector('#start').setAttribute('disabled', 'disabled');
+		    document.querySelector('#stop').removeAttribute('disabled');
+		    if(watchID) {
+		        navigator.geolocation.clearWatch(watchID);
+		        watchID = null;
+		    }
+		    
+		    watchID = navigator.geolocation.watchPosition(function(position) {
+    		    console.dir(position);
+    			//console.log('lat := ' + position.coords.latitude + ', lng := ' + position.coords.longitude);
+    			
+    			var node = document.createElement('div');
+    			
+    			node.innerHTML = 'timestamp := '+position.timestamp +', lat := ' + position.coords.latitude + ', lng := ' + position.coords.longitude;
+    			
+    			show.appendChild(node);
+    		}, function(err) {
+    		    alert('ERROR(' + err.code + '): ' + err.message);
+    		}, {
+                enableHighAccuracy: true, 
+                maximumAge        : 30000, 
+                timeout           : 27000
+            });
+		}, false);
+		
+		document.querySelector('#stop').addEventListener('click', function() {
+		    document.querySelector('#start').removeAttribute('disabled');
+		    document.querySelector('#stop').setAttribute('disabled', 'disabled');
+		    if(watchID) {
+		        navigator.geolocation.clearWatch(watchID);
+		        watchID = null;
+		    }
+		}, false);
+	}, false);
+	</script>
+</body>
+</html>
