@@ -1,0 +1,38 @@
+[nodejs https]
+
+====================
+var http = require('https');
+var fs = require('fs');
+
+var options = {
+  pfx: fs.readFileSync('../ssl/test.pfx'),
+  passphrase: 'passw0rd'
+};
+
+var server = http.createServer(options, app);
+--------------------
+
+====================
+openssl genrsa -des3 -out test.key 3072
+openssl req -new -x509 -days 365 -key test.key -out test.crt
+openssl pkcs12 -export -out test.pfx -inkey test.key -in test.crt
+--------------------
+
+====================
+openssl genrsa -out ssl-key.pem 1024
+openssl req -new -key ssl-key.pem -out certrequest.csr
+openssl x509 -req -in certrequest.csr -signkey ssl-key.pem -out ssl-cert.pem
+
+var https = require('https');
+var fs = require('fs');
+
+var sslkey = fs.readFileSync('ssl-key.pem');
+var sslcert = fs.readFileSync('ssl-cert.pem')
+
+var options = {
+    key: sslkey,
+    cert: sslcert
+};
+
+express.createServer(options);
+--------------------
