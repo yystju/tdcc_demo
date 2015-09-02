@@ -26,7 +26,8 @@
 		}
 	</style>
 	<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=NDouwHcPsFGTCV1k1QaSUUgW"></script>
-	<title>地图记录</title>
+	<script type="text/javascript" src="//api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+	<title>地图记录显示</title>
 	<!-- http://developer.baidu.com/map/jsdemo.htm#a1_2 -->
 </head>
 <body>
@@ -34,7 +35,7 @@
 		<table>
 			<tr>
 				<td><label for="shuttleName">线路</label></td><td><input type="text" id="shuttleName" name="shuttleName" list="shuttleList"/></td>
-				<td><button id="start">开始</button></td><td><button id="stop" disabled="disabled">停止</button></td>
+				<td><button id="start">读取</button></td><td><button id="stop">清除</button></td>
 			</tr>
 		</table>
 		<datalist id="shuttleList">
@@ -48,7 +49,6 @@
 			<option value="其它线" />
 		</datalist>
 	</div>
-	<button id="test">测试</button>
 	<div id="cords"></div>
 	<div id="allmap"></div>
 </body>
@@ -70,29 +70,17 @@
 	
 	if(window.indexedDB) {
 		var request = window.indexedDB.open('geodb', 2);
-		
-		console.log('--1--');
-		
-		request.addEventListener('upgradeneeded', function(evt) {
-			console.log('[upgradeneeded]');
 			
-			db = evt.target.result;
-			
-			//db.deleteObjectStore('geo');
+		request.addEventListener('upgradeneeded', function() {
+			db = request.result;
 			
 			var store = db.createObjectStore('geo', {keyPath: 'timestamp'});
 			var timeIndex = store.createIndex('by_timstamp', 'timestamp', {unique: true});
 			var shuttleNameIndex = store.createIndex('by_shuttleName', 'shuttleName', {unique: false});
 		}, false);
 		
-		request.addEventListener('success', function(evt) {
-			console.log('[success]');
-			db = evt.target.result;
-		}, false);
-		
-		request.addEventListener('error', function(err) {
-			console.log('[error]');
-			console.dir(err);
+		request.addEventListener('success', function() {
+			db = request.result;
 		}, false);
 		
 		// pushGeo = function(point, callback) {
@@ -118,8 +106,6 @@
 			
 			window.localStorage.setItem('__shuttleName__', shuttleName);
 			
-			console.dir({'timestamp':(new Date().getTime()), 'shuttleName': shuttleName, 'latitude':point.lat, 'longitude':point.lng});
-			
 			store.put({'timestamp':(new Date().getTime()), 'shuttleName': shuttleName, 'latitude':point.lat, 'longitude':point.lng});
 			
 			if(callback) {
@@ -135,10 +121,14 @@
 			
 			var shuttleName = document.querySelector('#shuttleName').value;
 			
+			window.localStorage.setItem('__shuttleName__', shuttleName);
+			
 			var index = store.index("by_shuttleName");
+			
+// 			var range = IDBKeyRange.only(shuttleName);
 
 			if(callback) {
-				// index.get(shuttleName).addEventListener('success', function(evt) {
+				// index.get(range).addEventListener('success', function(evt) {
 				// 	var data = evt.target.result;
 				// 	console.dir(evt);
 				// 	callback(data);
@@ -150,12 +140,11 @@
 					if (cursor) {
 						var data = cursor.value;
 						
-						console.dir(evt);
 						callback(data);
 						
 						cursor.continue();
 					} else {
-						
+						callback(null);
 					}
 				}, false);
 			}
@@ -219,73 +208,76 @@
 		});
 		
 		map.addEventListener('click', function(evt) {
-			
-			//console.log('click point : ' + evt.point.lng + ',' + evt.point.lat);
+			console.log('click point : ' + evt.point.lng + ',' + evt.point.lat);
 			
 			var cordDiv = document.querySelector('#cords');
 		    	
 	    	cordDiv.innerHTML = '('+evt.point.lng+','+evt.point.lat+')';
-		});
+		}, false);
 		
 		document.querySelector('#start').addEventListener('click', function() {
-		    document.querySelector('#start').setAttribute('disabled', 'disabled');
-		    document.querySelector('#stop').removeAttribute('disabled');
-		    if(watchID) {
-		        navigator.geolocation.clearWatch(watchID);
-		        watchID = null;
-		    }
+		    //document.querySelector('#start').setAttribute('disabled', 'disabled');
+		    //document.querySelector('#stop').removeAttribute('disabled');
 		    
-		    watchID = navigator.geolocation.watchPosition(function(point) {
-		    	var ggPoint = new BMap.Point(point.coords.longitude, point.coords.latitude);
-		    	
-		    	var convertor = new BMap.Convertor();
-		    	
-		    	var pointArr = [];
-		        pointArr.push(ggPoint);
-		        
-				convertor.translate(pointArr, 1, 5, function (data) {
-					if(data.status === 0) {
-						var bmapPoint = data.points[0];
-						
-						map.clearOverlays();
-
-						var marker = new BMap.Marker(bmapPoint);
-						
-						map.addOverlay(marker);
-						
-						var cordDiv = document.querySelector('#cords');
-		    	
-		    			cordDiv.innerHTML = '('+bmapPoint.lng+','+bmapPoint.lat+')';
-		    	
-		    			map.panTo(bmapPoint);
-		    			
-		    			pushBaiduGeo(bmapPoint);
-					}
-				});
-    		}, function(err) {
-    		    alert('ERROR(' + err.code + '): ' + err.message);
-    		}, {
-                enableHighAccuracy: true, 
-                maximumAge        : 30000, 
-                timeout           : 27000
-            });
+		    var dataArray = [];
+		    
+		    getDataByShuttleName(function(data) {
+		        if(data) {
+    				var cordDiv = document.querySelector('#cords');
+    		    	
+    				cordDiv.innerHTML += ('<br/><span>' + JSON.stringify(data) + '</span>');
+    				
+    				dataArray.push(new BMap.Point(data.longitude, data.latitude));
+		        } else {
+		            if(dataArray.length == 0) return;
+		            
+		            var maxX = dataArray[0].lng, maxY = dataArray[0].lat;
+        			var minX = dataArray[0].lng, minY = dataArray[0].lat;
+        			
+        			for(var i = 1; i < dataArray.length; ++i) {
+        			    if(maxX < dataArray[0].lng) {
+        			        maxX = dataArray[0].lng;
+        			    }
+        			    
+        			    if(minX > dataArray[0].lng) {
+        			        minX = dataArray[0].lng;
+        			    }
+        			    
+        			    if(maxY < dataArray[0].lat) {
+        			        maxY = dataArray[0].lat;
+        			    }
+        			    
+        			    if(minY > dataArray[0].lat) {
+        			        minY = dataArray[0].lat;
+        			    }
+        			}
+        			
+        			console.log(JSON.stringify([minX, minY, maxX, maxY]));
+        			
+        // 			var b = new BMap.Bounds(new BMap.Point(minX, minY),new BMap.Point(maxX, maxY));
+        //         	try {	
+        //         		BMapLib.AreaRestriction.setBounds(map, b);
+        //         	} catch (e) {
+        //         		alert(e);
+        //         	}
+                	
+                	map.clearOverlays();
+        			
+        			var polyline = new BMap.Polyline(dataArray, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+        			map.addOverlay(polyline);
+        			
+        			map.panTo(new BMap.Point((minX + maxX) / 2, (minY + maxY) / 2));
+		        }
+			});
 		}, false);
 		
 		document.querySelector('#stop').addEventListener('click', function() {
-		    document.querySelector('#start').removeAttribute('disabled');
-		    document.querySelector('#stop').setAttribute('disabled', 'disabled');
-		    if(watchID) {
-		        navigator.geolocation.clearWatch(watchID);
-		        watchID = null;
-		    }
-		}, false);
-		
-		document.querySelector('#test').addEventListener('click', function() {
-			getDataByShuttleName(function(data) {
-				var cordDiv = document.querySelector('#cords');
-		    	
-				cordDiv.innerHTML += '<br/>' + JSON.stringify(data);
-			});
+		    //document.querySelector('#start').removeAttribute('disabled');
+		    //document.querySelector('#stop').setAttribute('disabled', 'disabled');
+		    
+		    clearData(function () {
+		        console.log('Purged.');
+		    });
 		}, false);
 		
 		var shuttleName = window.localStorage.getItem('__shuttleName__');
