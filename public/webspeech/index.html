@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Web Speech API</title>
+	<script type="text/javascript">
+	//window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+	
+	window.addEventListener('DOMContentLoaded', function() {
+		document.querySelector('#test').addEventListener('click', function() {
+			var text = document.querySelector('#txt').value;
+			
+			var utterance = new SpeechSynthesisUtterance(text);
+			
+			utterance.addEventListener('start', function(evt) {console.dir(evt);}, false);
+			utterance.addEventListener('end', function(evt) {console.dir(evt);}, false);
+			utterance.addEventListener('error', function(err) {console.dir(err);}, false);
+			
+// 			utterance.volume = 0.5;
+// 			utterance.rate = 1.5;
+// 			utterance.pitch = 2;
+			
+// 			utterance.lang = 'en-GB';
+			
+			window.speechSynthesis.speak(utterance);
+		}, false);
+	}, false);
+	</script>
+</head>
+<body>
+	<input type="text" id="txt" placeholder="Please enter the text you want to read."/>
+	
+	<button id="test">Test</button>
+</body>
+</html>

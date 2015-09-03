@@ -71,14 +71,13 @@
 	if(window.indexedDB) {
 		var request = window.indexedDB.open('geodb', 2);
 		
-		console.log('--1--');
-		
 		request.addEventListener('upgradeneeded', function(evt) {
 			console.log('[upgradeneeded]');
 			
 			db = evt.target.result;
 			
-			//db.deleteObjectStore('geo');
+			if(db.objectStoreNames.contains('geo'))
+				db.deleteObjectStore('geo');
 			
 			var store = db.createObjectStore('geo', {keyPath: 'timestamp'});
 			var timeIndex = store.createIndex('by_timstamp', 'timestamp', {unique: true});
