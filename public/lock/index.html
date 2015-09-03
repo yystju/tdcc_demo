@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Lock Test</title>
+	<script type="text/javascript">
+	window.addEventListener('DOMContentLoaded', function() {
+		var tm = (new Date()).getTime();
+		
+		var T = 2500;
+		
+		setInterval(function() {
+			var now = (new Date()).getTime();
+			
+			console.log(now);
+			
+			if((now - tm) > (2 * T)) {
+				alert('Locked just now...');
+			}
+			
+			tm = (new Date()).getTime();
+		}, T);
+	}, false);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
