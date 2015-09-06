@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Promise Test</title>
+	<script type="text/javascript">
+	
+	var hello = function(data) {
+	    return new Promise(function(resolve, reject) {
+    		try {
+    			resolve(data);
+    		} catch(ex) {
+    			reject(ex);
+    		}
+    	});
+	};
+	
+	var getResource = function (url) {
+	    return new Promise(function(resolve, reject) {
+	        var req = new XMLHttpRequest();
+            req.open('GET', url);
+            
+            req.addEventListener('load', function() {
+                if(req.status == 200) {
+                    resolve(req.response);
+                } else {
+                    reject(Error(req.statusText));
+                }
+            }, false);
+            
+            req.addEventListener('error', function(err) {
+                reject(err);
+            }, false);
+            
+            req.send();
+	    });
+	}
+	
+	window.addEventListener('DOMContentLoaded', function() {
+		document.querySelector('#test').addEventListener('click', function() {
+			(function(url) {return getResource(url).then(JSON.parse);})('./test.json').then(function(data) {
+				console.log('HELLO DONE.' + data);
+			}).then(function() {
+				console.log('HELLO DONE2.');
+			}).catch(function(err) {
+				console.error('ERROR : ' + err.message);
+			}).then(function() {
+				console.log('HELLO DONE3.');
+			});
+		}, false);
+	}, false);
+	</script>
+</head>
+<body>
+	<button id="test">TEST</button>
+</body>
+</html>
