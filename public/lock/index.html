@@ -12,7 +12,7 @@
 		setInterval(function() {
 			var now = (new Date()).getTime();
 			
-			console.log(now);
+			document.writeln('<div>' + now + ' ... ' + window.innerHeight + ',' + window.innerWidth+ '</div>');
 			
 			if((now - tm) > (2 * T)) {
 				alert('Detached just now...');
