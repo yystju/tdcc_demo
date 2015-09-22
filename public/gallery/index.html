@@ -1,27 +1,27 @@
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Quan Shi <quan.shi@volvo.com>">
-	<meta name="description" content="TDCC Lecture Gallery">
-    <link rel="icon" href="./favicon.ico">
-	<title>TDCC Session Gallery</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-	<style type="text/css">
-	html {
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Quan Shi <quan.shi@volvo.com>">
+  <meta name="description" content="TDCC Lecture Gallery">
+  <link rel="icon" href="./favicon.ico">
+  <title>TDCC Session Gallery</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <style type="text/css">
+  html {
       position: relative;
       min-height: 100%;
     }
-	body {
-	  /*padding-top: 60px;*/
-	}
-	body > .container {
+  body {
+    /*padding-top: 60px;*/
+  }
+  body > .container {
       padding: 60px 15px 0;
     }
-	.footer {
+  .footer {
       position: absolute;
       bottom: 0;
       width: 100%;
@@ -34,18 +34,18 @@
         content: " -- ";
     }
     
-	@media print {
+  @media print {
       .container {
         width: auto;
       }
     }
-	</style>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="./docs.min.js"></script>
+  </style>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="./docs.min.js"></script>
 </head>
 <body role="document">
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -59,8 +59,8 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span></a></li>
-            <li class="dropdown">
+            <li><a href="#" data-toggle="modal" data-target="#qrCodeDialog" data-url="http://sqop05:8080/gallery/"><span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span></a></li>
+            <!--<li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#">Action</a></li>
@@ -71,21 +71,26 @@
                 <li><a href="#">Separated link</a></li>
                 <li><a href="#">One more separated link</a></li>
               </ul>
-            </li>
+            </li>-->
           </ul>
+          <form class="navbar-form navbar-right">
+            <span class="form-group input-group">
+              <input type="search" placeholder="Search" class="form-control">
+            </span><!--<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>-->
+          </form>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
     <div class="container">
-    <div class="alert alert-info alert-dismissible" role="alert">
+    <div class="alert alert-info alert-dismissible hidden" id="msgAlert" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
+        <strong id="msgAlertGreeting">Hey, dude!</strong><span id="msgAlertMessage">Welcome to TDCC Session Gallery~</span>
     </div>
     <div class="page-header">
-      <h1>TDCC Sessions <a href="#" data-toggle="modal" data-target="#register"><small>Register your own session...</small></a></h1>
+      <h1>TDCC Sessions <a href="#" data-toggle="modal" data-target="#editorDialog"><small>Register your own session...</small></a></h1>
     </div>
     <div class="list-group">
-        <a href="#" class="list-group-item" data-toggle="modal" data-target="#myModal">
+        <a href="#" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="1" data-name="Session 1" data-type="Lecture" data-owner="Quan Shi">
             <span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="holder.js/64x64" class="img-thumbnail" alt="Owner 1"></span>
             <span>
                 <h4 class="list-group-item-heading">Session 1<small>lecture</small></h4>
@@ -97,7 +102,7 @@
                 </p>
             </span>
         </a>
-        <a href="#" class="list-group-item" data-toggle="modal" data-target="#myModal">
+        <a href="#" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="2" data-name="Session 2" data-type="Seminar" data-owner="Kevin Zhang">
             <span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="holder.js/64x64" class="img-thumbnail" alt="Owner 1"></span>
             <span>
                 <h4 class="list-group-item-heading">Session 2<small>lecture</small></h4>
@@ -109,7 +114,7 @@
                 </p>
             </span>
         </a>
-        <a href="#" class="list-group-item" data-toggle="modal" data-target="#myModal">
+        <a href="#" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="3" data-name="Session 3" data-type="Lecture" data-owner="Alex Liu">
             <span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="holder.js/64x64" class="img-thumbnail" alt="Owner 1"></span>
             <span>
                 <h4 class="list-group-item-heading">Session 3<small>seminar</small></h4>
@@ -131,17 +136,17 @@
     
     <!--Dialogs-->
     
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <!--<div class="modal fade" id="viewerDialog" tabindex="-1" role="dialog" aria-labelledby="viewerDialogTitle">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="exampleModalLabel">Gallery</h4>
+            <h4 class="modal-title" id="viewerDialogTitle">Session Detail</h4>
           </div>
           <div class="modal-body">
                 <ul class="nav nav-tabs">
                     <li role="presentation active"><a href="#props" data-toggle="tab">Properties</a></li>
-                    <li role="presentation"><a href="#xxx" data-toggle="tab">xxx</a></li>
+                    <li role="presentation"><a href="#attendee" data-toggle="tab">Attendee List</a></li>
                     <li role="presentation"><a href="#carousel-example-generic"  data-toggle="tab">Photos</a></li>
                 </ul>
                 <div class="tab-content">
@@ -155,49 +160,124 @@
                     <tbody>
                         <tr>
                             <td>Name</td>
-                            <td>Session X</td>
+                            <td id="sessionName">Session X</td>
                         </tr>
                         <tr>
                             <td>Type</td>
-                            <td>Lecture/Seminar</td>
+                            <td id="sessionType">Lecture/Seminar</td>
                         </tr>
                         <tr>
                             <td>Owner</td>
-                            <td>XXX</td>
+                            <td id="sessionOwnerName">Owner Name</td>
                         </tr>
                     </tbody>
                 </table>
-                <div id="xxx" class="tab-pane fade">
-                    <h3>Section B</h3>
-                    <p>Vestibulum nec erat eu nulla rhoncus fringilla ut non neque. Vivamus nibh urna, ornare id gravida ut, mollis a magna. Aliquam porttitor condimentum nisi, eu viverra ipsum porta ut. Nam hendrerit bibendum turpis, sed molestie mi fermentum id. Aenean volutpat velit sem. Sed consequat ante in rutrum convallis. Nunc facilisis leo at faucibus adipiscing.</p>
+                <div id="attendee" class="tab-pane fade">
+                    <h3>Attendee List</h3>
+                    <p>&nbsp;</p>
                 </div>
-        		<div id="carousel-example-generic" class="carousel slide tab-pane fade" data-ride="carousel">
-        		<ol class="carousel-indicators">
-        			<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-        			<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-        			<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-        		</ol>
-        		<div class="carousel-inner" role="listbox">
-        			<div class="item active">
-        				<img data-src="holder.js/1140x500/auto/#777:#555/text:First slide" alt="First slide">
-        			</div>
-        			<div class="item">
-        				<img data-src="holder.js/1140x500/auto/#666:#444/text:Second slide" alt="Second slide">
-        			</div>
-        			<div class="item">
-        				<img data-src="holder.js/1140x500/auto/#555:#333/text:Third slide" alt="Third slide">
-        			</div>
-        		</div>
-        		<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-        			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        			<span class="sr-only">Previous</span>
-        		</a>
-        		<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-        			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        			<span class="sr-only">Next</span>
-        		</a>
-        	    </div>
-        	</div>
+            <div id="carousel-example-generic" class="carousel slide tab-pane fade" data-ride="carousel">
+              <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+              </ol>
+              <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                  <img data-src="holder.js/1140x500/auto/#777:#555/text:First slide" alt="First slide">
+                </div>
+                <div class="item">
+                  <img data-src="holder.js/1140x500/auto/#666:#444/text:Second slide" alt="Second slide">
+                </div>
+                <div class="item">
+                  <img data-src="holder.js/1140x500/auto/#555:#333/text:Third slide" alt="Third slide">
+                </div>
+              </div>
+              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>-->
+    
+    
+    
+    <div class="modal fade" id="editorDialog" tabindex="-1" role="dialog" aria-labelledby="editorDialogTitle">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="editorDialogTitle">TDCC Session Editor</h4>
+          </div>
+          <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li role="presentation"><a href="#editorProps" data-toggle="tab">Properties</a></li>
+                    <li role="presentation"><a href="#editorAttendee" data-toggle="tab">Attendee</a></li>
+                    <li role="presentation active"><a href="#editorCarousel"  data-toggle="tab">Photos</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div id="editorCarousel" class="carousel slide tab-pane fade in active" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                      <li data-target="#editorCarousel" data-slide-to="0" class="active"></li>
+                      <li data-target="#editorCarousel" data-slide-to="1"></li>
+                      <li data-target="#editorCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                      <div class="item active">
+                        <img data-src="holder.js/1140x500/auto/#777:#555/text:First slide" alt="First slide">
+                      </div>
+                      <div class="item">
+                        <img data-src="holder.js/1140x500/auto/#666:#444/text:Second slide" alt="Second slide">
+                      </div>
+                      <div class="item">
+                        <img data-src="holder.js/1140x500/auto/#555:#333/text:Third slide" alt="Third slide">
+                      </div>
+                    </div>
+                    <a class="left carousel-control" href="#editorCarousel" role="button" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#editorCarousel" role="button" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+                  <div id="editorProps" class="tab-pane fade in">
+                    <form role="form">
+                      <div class="form-group">
+                        <label for="editorSessionName">Name:</label>
+                        <input type="text" id="editorSessionName" name="sessionName" required placeholder="Session Name" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="editorSessionType">Type:</label>
+                        <input type="text" id="editorSessionType" name="sessionType" required list="sessionTypeList" placeholder="Lecture/Seminar" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="editorSessionOwner">Owner:</label>
+                        <input type="text" id="editorSessionOwner" name="sessionOwner" required placeholder="Owner Name" class="form-control">
+                      </div>
+                    </form>
+                    <datalist id="sessionTypeList">
+                      <option value="Lecture">
+                      <option value="Seminar">
+                    </datalist>
+                  </div>
+                  <div id="editorAttendee" class="tab-pane fade">
+                      <h3>Attendee List</h3>
+                      <p>&nbsp;</p>
+                  </div>
+                </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -205,73 +285,16 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    
+    <div class="modal fade" id="qrCodeDialog" tabindex="-1" role="dialog" aria-labelledby="qrCodeDialogModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="exampleModalLabel">XXXXX</h4>
+            <h4 class="modal-title" id="qrCodeDialogModalLabel">QR-Code</h4>
           </div>
-          <div class="modal-body">
-                <ul class="nav nav-tabs">
-                    <li role="presentation active"><a href="#props" data-toggle="tab">Properties</a></li>
-                    <li role="presentation"><a href="#xxx" data-toggle="tab">xxx</a></li>
-                    <li role="presentation"><a href="#carousel-example-generic"  data-toggle="tab">Photos</a></li>
-                </ul>
-                <div class="tab-content">
-                <table id="props" class="table table-striped tab-pane fade in active">
-                    <thead>
-                        <tr>
-                            <th class="col-xs-2 col-md-1">Property</th>
-                            <th class="">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Name</td>
-                            <td>Session X</td>
-                        </tr>
-                        <tr>
-                            <td>Type</td>
-                            <td>Lecture/Seminar</td>
-                        </tr>
-                        <tr>
-                            <td>Owner</td>
-                            <td>XXX</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div id="xxx" class="tab-pane fade">
-                    <h3>Section B</h3>
-                    <p>Vestibulum nec erat eu nulla rhoncus fringilla ut non neque. Vivamus nibh urna, ornare id gravida ut, mollis a magna. Aliquam porttitor condimentum nisi, eu viverra ipsum porta ut. Nam hendrerit bibendum turpis, sed molestie mi fermentum id. Aenean volutpat velit sem. Sed consequat ante in rutrum convallis. Nunc facilisis leo at faucibus adipiscing.</p>
-                </div>
-        		<div id="carousel-example-generic" class="carousel slide tab-pane fade" data-ride="carousel">
-        		<ol class="carousel-indicators">
-        			<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-        			<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-        			<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-        		</ol>
-        		<div class="carousel-inner" role="listbox">
-        			<div class="item active">
-        				<img data-src="holder.js/1140x500/auto/#777:#555/text:First slide" alt="First slide">
-        			</div>
-        			<div class="item">
-        				<img data-src="holder.js/1140x500/auto/#666:#444/text:Second slide" alt="Second slide">
-        			</div>
-        			<div class="item">
-        				<img data-src="holder.js/1140x500/auto/#555:#333/text:Third slide" alt="Third slide">
-        			</div>
-        		</div>
-        		<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-        			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        			<span class="sr-only">Previous</span>
-        		</a>
-        		<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-        			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        			<span class="sr-only">Next</span>
-        		</a>
-        	    </div>
-        	</div>
+          <div class="modal-body text-center">
+            <img src="" id="qrCodeDialogQRImage" class="img-thumbnail" alt="QR Code" width="330" height="330">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -279,5 +302,49 @@
         </div>
     </div>
     </div>
+    
+    <!--Script-->
+    
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#editorDialog').on('show.bs.modal', function (e) {
+          var key = $(e.relatedTarget).data('key');
+          
+          if(key) {
+            var name = $(e.relatedTarget).data('name');
+            var type = $(e.relatedTarget).data('type');
+            var owner = $(e.relatedTarget).data('owner');
+            
+            $('#editorSessionName').val(name);
+            $('#editorSessionType').val(type);
+            $('#editorSessionOwner').val(owner);
+          } else {
+            $('#editorSessionName').val('');
+            $('#editorSessionType').val('');
+            $('#editorSessionOwner').val('');
+          }
+        });
+        
+        // $('#sessionDetail').on('show.bs.modal', function (e) {
+        //   var key = $(e.relatedTarget).data('key');
+        //   var name = $(e.relatedTarget).data('name');
+        //   var type = $(e.relatedTarget).data('type');
+        //   var owner = $(e.relatedTarget).data('owner');
+        //   $('#sessionName').text(name);
+        //   $('#sessionType').text(type);
+        //   $('#sessionOwnerName').text(owner);
+        // });
+        
+        $('#qrCodeDialog').on('show.bs.modal', function (e) {
+          var url = $(e.relatedTarget).data('url');
+          
+          if(url) {
+            var qrURL = 'http://www.qr-code-generator.com/phpqrcode/getCode.php?cht=qr&chl='+encodeURIComponent(url)+'&chs=180x180&choe=UTF-8&chld=L|0'; 
+            
+            $('#qrCodeDialogQRImage').attr('src', qrURL).attr('alt', url);
+          }
+        });
+      });
+    </script>
 </body>
 </html>
