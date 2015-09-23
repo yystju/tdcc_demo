@@ -93,7 +93,19 @@
                 minHeight: 720
             }
         }, audio: false};
-	    
+
+        if(!navigator.getBattery) {
+            alert('navigator.getBattery is not supported.');
+        }
+
+        if(!navigator.vibrate) {
+            alert('navigator.vibrate is not supported.');
+        }
+        
+        if(!navigator.getUserMedia) {
+            alert('navigator.getUserMedia is not supported.');
+            return;
+        }
 	    navigator.getUserMedia(options, function(stream) {
 	        console.log('URL := ' + URL.createObjectURL(stream));
 	        
