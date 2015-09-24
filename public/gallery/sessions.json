@@ -1,0 +1,33 @@
+[
+    {
+        "_id": "1",
+        "title": "Zen-Coding brief Introduction",
+        "description": "Zen Coding is an editor plugin for high-speed HTML, XML, XSL (or any other structured code format) coding and editing. The core of this plugin is a powerful abbreviation engine which allows you to expand expressions—similar to CSS selectors—into HTML code.",
+        "cite": [{
+            "url": "https://code.google.com/p/zen-coding/", 
+            "text": "zen-coding home"
+        },{
+            "url": "http://www.smashingmagazine.com/2009/11/21/zen-coding-a-new-way-to-write-html-code/", 
+            "text": "Zen Coding: A Speedy Way To Write HTML/CSS Code"
+        }],
+        "type": "seminar",
+        "owner": ["v0cn305"],
+        "follower": ["v0cn115"],
+        "images": ["./imgs/zen_coding.png"]
+    },{
+        "_id": "2",
+        "title": "NVS Integration Library Introduction.",
+        "description": "NVS Integration Library is ...",
+        "cite": [{
+            "url": "https://teamplace.volvo.com/sites/volvoit-dotNET/WebPartLib/NVSWebPage.aspx", 
+            "text": "NVS home"
+        },{
+            "url": "http://www.smashingmagazine.com/2009/11/21/zen-coding-a-new-way-to-write-html-code/", 
+            "text": "Zen Coding: A Speedy Way To Write HTML/CSS Code"
+        }],
+        "type": "seminar",
+        "owner": ["v0cn115"],
+        "follower": ["v0cn141", "v0cn305"],
+        "images": ["./imgs/nvs_integration.png"]
+    }
+]
