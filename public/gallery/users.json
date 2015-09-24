@@ -1,0 +1,18 @@
+[
+    {
+        "vcnId": "v0cn305",
+        "displayName": "Quan Shi",
+        "email": "quan.shi@volvo.com",
+        "portrait": "./imgs/quan_portrait.png"
+    },{
+        "vcnId": "v0cn115",
+        "displayName": "Alex Liu",
+        "email": "alex.liu@volvo.com",
+        "portrait": "./imgs/alex_portrait.png"
+    },{
+        "vcnId": "v0cn141",
+        "displayName": "Eric Zhang",
+        "email": "eric.zhang@consultant.volvo.com",
+        "portrait": "./imgs/eric_portrait.png"
+    }
+]
