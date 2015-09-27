@@ -91,7 +91,8 @@
     <div class="page-header">
       <h1>TDCC Sessions <a href="javascript:void(0);" data-toggle="modal" data-target="#editorDialog"><small>Register your own session...</small></a></h1>
     </div>
-    <div class="list-group">
+    <div id="sessionList" class="list-group">
+        <!--
         <a href="javascript:void(0);" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="1" data-name="Session 1" data-type="Lecture" data-owner="Quan Shi">
             <span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="holder.js/64x64" class="img-thumbnail" alt="Owner 1"></span>
             <span>
@@ -128,6 +129,7 @@
                 </p>
             </span>
         </a>
+        -->
     </div>
     </div>
     <footer class="footer">
@@ -147,12 +149,36 @@
           </div>
           <div class="modal-body">
                 <ul class="nav nav-tabs">
-                    <li role="presentation active"><a href="#editorCarousel"  data-toggle="tab">Photos</a></li>
-                    <li role="presentation"><a href="#editorProps" data-toggle="tab">Properties</a></li>
+                    <li role="presentation active"><a href="#editorProps" data-toggle="tab">Properties</a></li>
+                    <li role="presentation"><a href="#editorCarousel"  data-toggle="tab">Photos</a></li>
                     <li role="presentation"><a href="#editorFollowList" data-toggle="tab">Follow list</a></li>
                 </ul>
                 <div class="tab-content">
-                  <div id="editorCarousel" class="carousel slide tab-pane fade in active" data-ride="carousel">
+                  <div id="editorProps" class="tab-pane fade in active">
+                    <form role="form">
+                      <div class="form-group">
+                        <label for="editorSessionName">Name:</label>
+                        <input type="text" id="editorSessionName" name="sessionName" required placeholder="Session Name" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="editorSessionType">Type:</label>
+                        <input type="text" id="editorSessionType" name="sessionType" required list="sessionTypeList" placeholder="Lecture/Seminar" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="editorSessionOwner">Owner:</label>
+                        <input type="text" id="editorSessionOwner" name="sessionOwner" required placeholder="Owner Name" class="form-control">
+                      </div>
+                    </form>
+                    <datalist id="sessionTypeList">
+                      <option value="Lecture">
+                      <option value="Seminar">
+                    </datalist>
+                  </div>
+                  <div id="editorFollowList" class="tab-pane fade">
+                      <h3>Follow List</h3>
+                      <p>&nbsp;</p>
+                  </div>
+                  <div id="editorCarousel" class="carousel slide tab-pane fade in" data-ride="carousel">
                     <ol class="carousel-indicators">
                       <li data-target="#editorCarousel" data-slide-to="0" class="active"></li>
                       <li data-target="#editorCarousel" data-slide-to="1"></li>
@@ -177,30 +203,6 @@
                       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                       <span class="sr-only">Next</span>
                     </a>
-                  </div>
-                  <div id="editorProps" class="tab-pane fade in">
-                    <form role="form">
-                      <div class="form-group">
-                        <label for="editorSessionName">Name:</label>
-                        <input type="text" id="editorSessionName" name="sessionName" required placeholder="Session Name" class="form-control">
-                      </div>
-                      <div class="form-group">
-                        <label for="editorSessionType">Type:</label>
-                        <input type="text" id="editorSessionType" name="sessionType" required list="sessionTypeList" placeholder="Lecture/Seminar" class="form-control">
-                      </div>
-                      <div class="form-group">
-                        <label for="editorSessionOwner">Owner:</label>
-                        <input type="text" id="editorSessionOwner" name="sessionOwner" required placeholder="Owner Name" class="form-control">
-                      </div>
-                    </form>
-                    <datalist id="sessionTypeList">
-                      <option value="Lecture">
-                      <option value="Seminar">
-                    </datalist>
-                  </div>
-                  <div id="editorFollowList" class="tab-pane fade">
-                      <h3>Follow List</h3>
-                      <p>&nbsp;</p>
                   </div>
                 </div>
           </div>
@@ -232,16 +234,47 @@
     
     <script type="text/javascript">
       $(document).ready(function() {
+        
+        var sessionData = null;
+        var userData = null;
+        
         var q = $.getJSON('./sessions.json', function(data) {
-          console.log('Q: ' + JSON.stringify(data));
+          sessionData = data;
         });
         
         var p = $.getJSON('./users.json', function(data) {
-          console.log('P: ' + JSON.stringify(data));
+          userData = data;
         });
         
+        var getUser = function(vcnId) {
+          var usr = null;
+          if(userData && userData.length) {
+            userData.forEach(function (element, index, array) {
+              if(element.vcnId == vcnId) {
+                usr = element;
+                return false;
+              }
+            });
+          }
+          return usr;
+        };
+        
         $.when.apply($, [p, q]).then(function() {
-          console.log('ALL DONE~');
+          // console.log('sessionData : ' + JSON.stringify(sessionData));
+          // console.log('userData : ' + JSON.stringify(userData));
+          
+          if(sessionData && sessionData.length) {
+            $('#sessionList').empty();
+            for(var i = 0; i < i < sessionData.length; ++i) {
+              var session = sessionData[i];
+              
+              var usr = getUser(session.owner[0]);
+              
+              console.log(JSON.stringify(usr));
+              
+              $('#sessionList').append('<a href="javascript:void(0);" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="'+session._id+'" data-name="'+session.title+'" data-type="'+session.type+'" data-owner="'+usr.displayName+'"><span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="./holder.js/64x64" class="img-thumbnail" alt=""></span><span><h4 class="list-group-item-heading">'+session.title+'<small>'+session.type+'</small></h4><p>Planned time: <time datetime="'+session.plannedTime+'">'+session.plannedTime+'</time>, Status: <span>'+session.status+'</span></p><p class="list-group-item-text"><div class="progress"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="'+(100.0 * session.progress)+'" aria-valuemin="0" aria-valuemax="100" style="width: '+(100.0 * session.progress)+'%;"><span>'+(100.0 * session.progress).toFixed(2)+'% Complete</span></div></div></p></span></a>');
+            }
+          }
         });
         
         $('#editorDialog').on('show.bs.modal', function (e) {

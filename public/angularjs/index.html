@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>AngularJS Test</title>
+	<script type="text/javascript" src="./angular.js"></script>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		
+		app.service('asyncService', function($http, $q) {
+			return {
+				loadDataFromUrls: function(urls) {
+					var deferred = $q.defer();
+					var urlCalls = [];
+					angular.forEach(urls, function(url) {
+						urlCalls.push($http.get(url.url));
+					});
+					$q.all(urlCalls).then(function(results) {
+						deferred.resolve(JSON.stringify(results));
+					}, function(errors) {
+						deferred.reject(errors);
+					}, function(updates) {
+						deferred.update(updates);
+					});
+					return deferred.promise;
+				}
+			};
+		});
+		
+		app.controller('myCtrl', function($scope, $http, $test, asyncService) {
+			$http.get('../gallery/sessions.json').success(function(response) {
+				$scope.sessions = response;
+			});
+		}).factory('$test', function($http, $q) {
+			return {
+				t1: function() { alert('t1'); }
+			};
+		});;
+	
+		// var app2 = angular.module('myApp2', []);
+		// app2.controller('myCtrl2', function($scope, $http) {
+		// 	$http.get('../gallery/users.json').success(function(response) {
+		// 		$scope.users = response;
+		// 	});
+		// });
+	
+		// angular.element(document).ready(function() {
+		// 	angular.bootstrap(document, ['myApp','myApp2']);
+		// });
+	</script>
+</head>
+<body>
+	<div ng-app="myApp" ng-controller="myCtrl" ng-init="what='Hahaha'">
+		<ul>
+			<li ng-repeat="x in sessions">
+				<span ng-bind="x._id"></span>
+				<span ng-bind="x.title" style="background-color:#f1f1f1"></span>
+				<ul>
+					<li ng-repeat="y in x.cite">
+						<a href="{{y.url}}">{{y.text}}</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+
+	<!--<div ng-app="myApp2" ng-controller="myCtrl2">-->
+	<!--	<ul>-->
+	<!--		<li ng-repeat="x in users">-->
+	<!--			<span ng-bind="x.vcnId"></span>-->
+	<!--			<span ng-bind="x.displayName"></span>-->
+	<!--			<span ng-bind="x.email"></span>-->
+	<!--		</li>-->
+	<!--	</ul>-->
+	<!--</div>-->
+</body>
+</html>

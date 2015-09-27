@@ -13,6 +13,9 @@
         "type": "seminar",
         "owner": ["v0cn305"],
         "follower": ["v0cn115"],
+        "plannedTime": "2015-12-25T02:30:00.000Z",
+        "status": "Planned",
+        "progress": 0.2,
         "images": ["./imgs/zen_coding.png"]
     },{
         "_id": "2",
@@ -28,6 +31,54 @@
         "type": "seminar",
         "owner": ["v0cn115"],
         "follower": ["v0cn141", "v0cn305"],
+        "plannedTime": "2015-10-15T02:30:00.000Z",
+        "status": "Done",
+        "progress": 0.5,
+        "images": ["./imgs/nvs_integration.png"]
+    },{
+        "_id": "3",
+        "title": "Morden HTML programming S3 -- Perception Solution.",
+        "description": "...",
+        "cite": [{
+            "url": "https://sqop05:8080/future/", 
+            "text": "Future Demo"
+        }],
+        "type": "lecture",
+        "owner": ["v0cn305"],
+        "follower": ["v0cn141", "v0cn115"],
+        "plannedTime": "2015-10-25T02:30:00.000Z",
+        "status": "Planned",
+        "progress": 0.8,
+        "images": ["./imgs/nvs_integration.png"]
+    },{
+        "_id": "4",
+        "title": "XXX",
+        "description": "...",
+        "cite": [{
+            "url": "https://sqop05:8080/", 
+            "text": "Demo"
+        }],
+        "type": "lecture",
+        "owner": ["v0cn305"],
+        "follower": ["v0cn141", "v0cn115"],
+        "plannedTime": "2015-10-25T02:30:00.000Z",
+        "status": "Planned",
+        "progress": 0.55,
+        "images": ["./imgs/nvs_integration.png"]
+    },{
+        "_id": "5",
+        "title": "YYY",
+        "description": "...",
+        "cite": [{
+            "url": "https://sqop05:8080/", 
+            "text": "Demo"
+        }],
+        "type": "lecture",
+        "owner": ["v0cn305"],
+        "follower": ["v0cn141", "v0cn115"],
+        "plannedTime": "2015-10-25T02:30:00.000Z",
+        "status": "Planned",
+        "progress": 0.234,
         "images": ["./imgs/nvs_integration.png"]
     }
 ]
