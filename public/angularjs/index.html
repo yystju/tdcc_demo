@@ -3,58 +3,58 @@
 <head>
 	<meta charset="UTF-8">
 	<title>AngularJS Test</title>
-	<script type="text/javascript" src="./angular.js"></script>
+	<!--<script type="text/javascript" src="./angular.js"></script>-->
+	<script type="text/javascript" src="./angular.min.js"></script>
 	<script type="text/javascript">
-		var app = angular.module('myApp', []);
+		var app = angular.module('TDCCApp', []);
 		
-		app.service('asyncService', function($http, $q) {
+		app.service('TDCCService', function($http, $q) {
 			return {
-				loadDataFromUrls: function(urls) {
+				initModule: function($scope) {
 					var deferred = $q.defer();
-					var urlCalls = [];
-					angular.forEach(urls, function(url) {
-						urlCalls.push($http.get(url.url));
-					});
-					$q.all(urlCalls).then(function(results) {
-						deferred.resolve(JSON.stringify(results));
+					
+					$q.all([
+						$http.get('../gallery/sessions.json'), 
+						$http.get('../gallery/users.json')
+					]).then(function(results) {
+						//console.dir(results);
+						
+						if(results && results.length > 0) {
+							$scope.sessions = results[0].data; // sessions
+							$scope.users = results[1].data; // users
+						}
+						
+						deferred.resolve(results[0].data, results[1].data);
 					}, function(errors) {
+						//console.dir(errors);
 						deferred.reject(errors);
 					}, function(updates) {
+						//console.dir(updates);
 						deferred.update(updates);
 					});
+					
 					return deferred.promise;
 				}
 			};
 		});
 		
-		app.controller('myCtrl', function($scope, $http, $test, asyncService) {
-			$http.get('../gallery/sessions.json').success(function(response) {
-				$scope.sessions = response;
+		app.controller('MainController', function($scope, $http, TDCCService) {
+			TDCCService.initModule($scope).then(function(sessions, users) {
+				// console.log('sessions := ' + JSON.stringify(sessions) + ', users := ' + JSON.stringify(users));
 			});
-		}).factory('$test', function($http, $q) {
-			return {
-				t1: function() { alert('t1'); }
+			
+			$scope.addUser = function(vcnId, name, email) {
+				$scope.users.push({'vcnId': vcnId, 'displayName': name, 'email': email});
 			};
-		});;
-	
-		// var app2 = angular.module('myApp2', []);
-		// app2.controller('myCtrl2', function($scope, $http) {
-		// 	$http.get('../gallery/users.json').success(function(response) {
-		// 		$scope.users = response;
-		// 	});
-		// });
-	
-		// angular.element(document).ready(function() {
-		// 	angular.bootstrap(document, ['myApp','myApp2']);
-		// });
+		});
 	</script>
 </head>
-<body>
-	<div ng-app="myApp" ng-controller="myCtrl" ng-init="what='Hahaha'">
+<body ng-app="TDCCApp" ng-controller="MainController" ng-init="what='Hahaha'">
+	<div>
 		<ul>
-			<li ng-repeat="x in sessions">
+			<li ng-repeat="x in sessions" style="background-color:#f1f1f1">
 				<span ng-bind="x._id"></span>
-				<span ng-bind="x.title" style="background-color:#f1f1f1"></span>
+				<span ng-bind="x.title"></span>
 				<ul>
 					<li ng-repeat="y in x.cite">
 						<a href="{{y.url}}">{{y.text}}</a>
@@ -63,15 +63,15 @@
 			</li>
 		</ul>
 	</div>
-
-	<!--<div ng-app="myApp2" ng-controller="myCtrl2">-->
-	<!--	<ul>-->
-	<!--		<li ng-repeat="x in users">-->
-	<!--			<span ng-bind="x.vcnId"></span>-->
-	<!--			<span ng-bind="x.displayName"></span>-->
-	<!--			<span ng-bind="x.email"></span>-->
-	<!--		</li>-->
-	<!--	</ul>-->
-	<!--</div>-->
+	<div>
+		<ul>
+			<li ng-repeat="x in users">
+				<span ng-bind="x.vcnId"></span>
+				<span ng-bind="x.displayName"></span>
+				<span ng-bind="x.email"></span>
+			</li>
+		</ul>
+		<button  ng-click="addUser(11, 'who', 'who@am.i');">Haha</button>
+	</div>
 </body>
 </html>
