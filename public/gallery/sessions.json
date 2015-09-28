@@ -59,8 +59,8 @@
             "text": "Demo"
         }],
         "type": "lecture",
-        "owner": ["v0cn305"],
-        "follower": ["v0cn141", "v0cn115"],
+        "owner": ["v0cn141"],
+        "follower": ["v0cn305", "v0cn115"],
         "plannedTime": "2015-10-25T02:30:00.000Z",
         "status": "Planned",
         "progress": 0.55,
