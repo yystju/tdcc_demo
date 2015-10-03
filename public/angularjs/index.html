@@ -24,7 +24,7 @@
 							$scope.users = results[1].data; // users
 						}
 						
-						deferred.resolve(results[0].data, results[1].data);
+						deferred.resolve($scope.sessions, $scope.users);
 					}, function(errors) {
 						//console.dir(errors);
 						deferred.reject(errors);
