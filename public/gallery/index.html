@@ -43,10 +43,12 @@
   }
   </style>
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="./angular.min.js"></script>
   <script type="text/javascript" src="./docs.min.js"></script>
+  <script type="text/javascript" src="./index.js"></script>
 </head>
-<body role="document">
+<body role="document" ng-app="TDCCApp" ng-controller="MainController" ng-init="what='Hahaha'">
   <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -92,44 +94,18 @@
       <h1>TDCC Sessions <a href="javascript:void(0);" data-toggle="modal" data-target="#editorDialog"><small>Register your own session...</small></a></h1>
     </div>
     <div id="sessionList" class="list-group">
-        <!--
-        <a href="javascript:void(0);" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="1" data-name="Session 1" data-type="Lecture" data-owner="Quan Shi">
-            <span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="holder.js/64x64" class="img-thumbnail" alt="Owner 1"></span>
+      <a href="javascript:void(0);" class="list-group-item" data-toggle="modal" data-target="#editorDialog" ng-repeat="s in sessions" data-key="{{s._id}}" data-name="{{s.title}}" data-type="{{s.type}}" data-owner="{{getUser(s.owner[0]).displayName}}">
+            <span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img src="{{getUser(s.owner[0]).portrait}}" class="img-thumbnail" alt="{{getUser(s.owner[0]).displayName}}"></span>
             <span>
-                <h4 class="list-group-item-heading">Session 1<small>lecture</small></h4>
-                <p>Planned time: <time datetime="2015-08-02 18:48">August 02, 2015</time>, Status: <span>Done</span></p>
+                <h4 class="list-group-item-heading">{{s.title}}<small>{{s.type}}</small></h4>
+                <p>Planned time: <time datetime="{{s.plannedTime}}">{{s.plannedTime}}</time>, Status: <span>{{s.status}}</span></p>
                 <p class="list-group-item-text">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span>100% Complete</span></div>
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{(100.0 * s.progress).toFixed(2)}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width : ( '' + (100.0 * s.progress).toFixed(2) + '%' )}"><span>{{(100.0 * s.progress).toFixed(2)}}% Complete</span></div>
                     </div>
                 </p>
             </span>
         </a>
-        <a href="javascript:void(0);" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="2" data-name="Session 2" data-type="Seminar" data-owner="Kevin Zhang">
-            <span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="holder.js/64x64" class="img-thumbnail" alt="Owner 1"></span>
-            <span>
-                <h4 class="list-group-item-heading">Session 2<small>lecture</small></h4>
-                <p>Planned time: <time datetime="2015-09-17 18:48">September 17, 2015</time>, Status: <span>In progress</span></p>
-                <p class="list-group-item-text">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span>60% Complete</span></div>
-                    </div>
-                </p>
-            </span>
-        </a>
-        <a href="javascript:void(0);" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="3" data-name="Session 3" data-type="Lecture" data-owner="Alex Liu">
-            <span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="holder.js/64x64" class="img-thumbnail" alt="Owner 1"></span>
-            <span>
-                <h4 class="list-group-item-heading">Session 3<small>seminar</small></h4>
-                <p>Planned time: <time datetime="2015-09-14 18:48">September 14, 2015</time>, Status: <span>In Progress</span></p>
-                <p class="list-group-item-text">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span>20% Complete</span></div>
-                    </div>
-                </p>
-            </span>
-        </a>
-        -->
     </div>
     </div>
     <footer class="footer">
@@ -229,86 +205,5 @@
         </div>
     </div>
     </div>
-    
-    <!--Script-->
-    
-    <script type="text/javascript">
-      $(document).ready(function() {
-        
-        var sessionData = null;
-        var userData = null;
-        
-        var q = $.getJSON('./sessions.json', function(data) {
-          sessionData = data;
-        });
-        
-        var p = $.getJSON('./users.json', function(data) {
-          userData = data;
-        });
-        
-        var getUser = function(vcnId) {
-          var usr = null;
-          if(userData && userData.length) {
-            userData.forEach(function (element, index, array) {
-              if(element.vcnId == vcnId) {
-                usr = element;
-                return false;
-              }
-            });
-          }
-          return usr;
-        };
-        
-        $.when.apply($, [p, q]).then(function() {
-          // console.log('sessionData : ' + JSON.stringify(sessionData));
-          // console.log('userData : ' + JSON.stringify(userData));
-          
-          if(sessionData && sessionData.length) {
-            $('#sessionList').empty();
-            for(var i = 0; i < sessionData.length; ++i) {
-              var session = sessionData[i];
-              
-              var usr = getUser(session.owner[0]);
-              
-              console.log(JSON.stringify(usr));
-              
-              $('#sessionList').append('<a href="javascript:void(0);" class="list-group-item" data-toggle="modal" data-target="#editorDialog" data-key="'+session._id+'" data-name="'+session.title+'" data-type="'+session.type+'" data-owner="'+usr.displayName+'"><span class="col-xs-2 col-md-1" style="padding-left: 0px;"><img data-src="./holder.js/64x64" class="img-thumbnail" alt=""></span><span><h4 class="list-group-item-heading">'+session.title+'<small>'+session.type+'</small></h4><p>Planned time: <time datetime="'+session.plannedTime+'">'+session.plannedTime+'</time>, Status: <span>'+session.status+'</span></p><p class="list-group-item-text"><div class="progress"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="'+(100.0 * session.progress)+'" aria-valuemin="0" aria-valuemax="100" style="width: '+(100.0 * session.progress)+'%;"><span>'+(100.0 * session.progress).toFixed(2)+'% Complete</span></div></div></p></span></a>');
-            }
-          }
-        });
-        
-        $('#editorDialog').on('hidden.bs.modal', function (e) {
-          console.log('form := ' + $('#editorPropForm').serialize());
-        });
-        
-        $('#editorDialog').on('show.bs.modal', function (e) {
-          var key = $(e.relatedTarget).data('key');
-          
-          if(key) {
-            var name = $(e.relatedTarget).data('name');
-            var type = $(e.relatedTarget).data('type');
-            var owner = $(e.relatedTarget).data('owner');
-            
-            $('#editorSessionName').val(name);
-            $('#editorSessionType').val(type);
-            $('#editorSessionOwner').val(owner);
-          } else {
-            $('#editorSessionName').val('');
-            $('#editorSessionType').val('');
-            $('#editorSessionOwner').val('');
-          }
-        });
-        
-        $('#qrCodeDialog').on('show.bs.modal', function (e) {
-          var url = $(e.relatedTarget).data('url');
-          
-          if(url) {
-            var qrURL = 'http://www.qr-code-generator.com/phpqrcode/getCode.php?cht=qr&chl='+encodeURIComponent(url)+'&chs=180x180&choe=UTF-8&chld=L|0'; 
-            
-            $('#qrCodeDialogQRImage').attr('src', qrURL).attr('alt', url);
-          }
-        });
-      });
-    </script>
 </body>
 </html>
