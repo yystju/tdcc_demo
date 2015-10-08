@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>WebSocket Test</title>
+	<style type="text/css">
+	#output {
+		border: 1px solid gray;
+		margin: 5px;
+		padding: 2px;
+		
+		width: 100%;
+		height: 600px;
+		overflow: scroll;
+	}
+	</style>
+	<script type="text/javascript">
+	window.addEventListener('DOMContentLoaded', function() {
+		var output = document.querySelector('#output');
+		
+		var w = null;
+		
+		var logOut = function(msg) {
+			var element = document.createElement('div');
+			
+			if(typeof msg == 'Object') {
+				msg = JSON.stringify(msg);
+			}
+			
+			element.innerHTML = '' + msg;
+			
+			output.appendChild(element);
+		};
+		
+		document.querySelector('#test').addEventListener('click', function() {
+			w = new WebSocket('ws://prj01-yystju.c9.io/ws/test');
+			
+			w.onopen = function() {
+				logOut('[ONOPEN]');
+			};
+			
+			w.onmessage = function(evt) {
+				logOut('[ONMESSAGE]');
+				
+				var msg = evt.data;
+				
+				logOut(msg);
+			};
+		}, false);
+		
+		document.querySelector('#send').addEventListener('click', function() {
+			if(w) w.send('haha', {'x': 100, 'y': 100});
+		}, false);
+	}, false);
+	</script>
+</head>
+<body>
+	<button id="test">Test</button><button id="send">Send</button>
+	<div id="output">
+	</div>
+</body>
+</html>
