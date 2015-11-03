@@ -32,6 +32,14 @@
 
 Here's an idea: why don't we take `SuperiorProject` and turn it into `**Reasonable**Project`.
 
+
+```
+x = 0
+x = 2 + 2
+what is x
+```
+
+
 TDCC demos
 
 This is a demo project for TDCC.
