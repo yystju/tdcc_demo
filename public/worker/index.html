@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Worker Test</title>
+	<script type="text/javascript">
+      window.addEventListener('DOMContentLoaded', function() {
+        var contentDiv = document.querySelector('#content');
+  
+        var debug = function(message) {
+          var d = document.createElement('div');
+          d.innerHTML = message;
+          
+          contentDiv.appendChild(d);
+        };
+        
+        var worker = null;
+        
+        document.querySelector('#start').addEventListener('click', function() {
+          if(worker) {
+            worker.terminate();
+          }
+          
+          worker = new Worker('worker1.js');
+        
+          worker.onmessage = function(evt) {
+            var data = evt.data;
+            if(data.action == 'debug') {
+              debug(data.msg);
+            } else if(data.action == 'work') {
+              debug('WORK:=' + JSON.stringify(data.data));
+            }
+          };
+          
+          worker.onerror = function(err) {
+            debug('[ERROR] - ' + JSON.stringify(err));
+          };
+        }, false);
+        
+        document.querySelector('#stop').addEventListener('click', function() {
+          worker.terminate();
+        }, false);
+        
+        document.querySelector('#ping').addEventListener('click', function() {
+          worker.postMessage('HELLO');
+        }, false);
+      }, false);
+	</script>
+</head>
+<body>
+  <button id="start">Start</button><button id="stop">Stop</button><button id="ping">Ping</button>
+	<div id="content"></div>
+</body>
+</html>

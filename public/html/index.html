@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GEO TEST</title>
+  <style type="text/css">
+  body {
+    margin: 0px;
+    padding: 0px;
+    background-color: white;
+  }
+  
+  #map {width: 100%; height: 480px; border: 1px solid gray; overflow: hidden;margin:0;font-family:"微软雅黑";}
+  
+  #content{
+    /*display: none;*/
+    /*z-index: 200;*/
+    /*position: fixed;*/
+    /*left: 0px;*/
+    /*right: 0px;*/
+    /*top: 2.5em;*/
+    /*bottom: 0px;*/
+    border: 1px solid gray;
+    width: 100%;
+    height: 200px;
+    overflow: scroll;
+  }
+  </style>
+	<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=NDouwHcPsFGTCV1k1QaSUUgW"></script>
+  <script type="text/javascript" src="./js/ScreenLockHelper.js"></script>
+  <script type="text/javascript" src="./js/GeoHelper.js"></script>
+  <!--<script type="text/javascript" src="./js/fullscreen.js"></script>-->
+  <script type="text/javascript">
+  window.addEventListener('DOMContentLoaded', function() {
+    var contentDiv = document.querySelector('#content');
+    
+    var debug = function(message) {
+      var d = document.createElement('div');
+      d.innerHTML = message;
+      
+      contentDiv.appendChild(d);
+      
+      contentDiv.scrollTop = contentDiv.scrollHeight;
+    };
+    
+    /*global BMap*/
+    /*global BMAP_STATUS_SUCCESS*/
+    
+    //console.log('document.documentElement.clientHeight := ' + document.documentElement.clientHeight);
+    document.querySelector('#map').setAttribute('style', 'height: '+(document.documentElement.clientHeight - 200)+'px;');
+    
+    var map = new BMap.Map('map');
+    
+    var convertor = new BMap.Convertor();
+    
+    navigator.geolocation.getCurrentPosition(function(position) {
+      convertor.translate([new BMap.Point(position.coords.longitude, position.coords.latitude)], 1, 5, function (data) {
+				if(data.status === 0) {
+					var bmapPoint = data.points[0];
+					
+					map.clearOverlays();
+    
+  				var marker = new BMap.Marker(bmapPoint);
+  				
+  				map.addOverlay(marker);
+					
+          map.centerAndZoom(bmapPoint, 18);
+				}
+      });
+    });
+    
+    
+		// map.addEventListener('click', function(evt) {
+		// 	var cordDiv = document.querySelector('#cords');
+	 //   cordDiv.innerHTML = '('+evt.point.lng+','+evt.point.lat+')';
+		// });
+		
+		var lastUpdate = new Date();
+		
+		var panMap = function(position) {
+		  var now = new Date();
+		  
+		  if(now - lastUpdate > 5000) {
+		    lastUpdate = now;
+		    
+		    debug('[PAN MAP]' + now);
+		    
+    		convertor.translate([new BMap.Point(position.coords.longitude, position.coords.latitude)], 1, 5, function (data) {
+    			if(data.status === 0) {
+    				var bmapPoint = data.points[0];
+    				
+    				debug('' + bmapPoint);
+    				
+    				map.clearOverlays();
+    
+    				var marker = new BMap.Marker(bmapPoint);
+    				
+    				map.addOverlay(marker);
+    				
+        		map.panTo(bmapPoint);
+    			}
+    		});
+		  }
+		};
+    
+    /*global geoHelper*/
+    /*global screenLockHelper*/
+    
+    screenLockHelper.debug = debug;
+    geoHelper.debug = debug;
+
+    screenLockHelper.onIntervalCheck = function() {
+      geoHelper.ping();
+    };
+    
+    screenLockHelper.onScreenReopen = function() {
+      debug('[REOPEN]');
+      geoHelper.reconnect();
+    };
+    
+    var watchID = null;
+    
+    geoHelper.onready = function() {
+      var geoOption = {
+        enableHighAccuracy: true, 
+        maximumAge        : 0, 
+        timeout           : 30000
+      };
+  
+      var errorHandler = function(err) {
+        debug(err.message);
+      };
+      
+      var doomLoop = function() {
+        if(watchID) {
+          navigator.geolocation.clearWatch(watchID);
+        }
+
+        watchID = navigator.geolocation.watchPosition(function(position) {
+          debug('POSITION : (' + position.coords.longitude + ', ' + position.coords.latitude + ')');
+          geoHelper.sendPosition(position);
+          panMap(position);
+        }, function(err) {
+          errorHandler(err);
+          watchID = doomLoop();
+        }, geoOption);
+      };
+  
+      doomLoop();
+    };
+    
+    //Send WebSocket URL...
+    
+    var url = ((location.protocol == 'https:') ? 'wss://' : 'ws://') + location.hostname + (location.port.length > 0 ? (':' + location.port) : '') + '/geo';
+    
+    debug('URL : ' + url);
+    
+    geoHelper.setURL(url);
+    
+    geoHelper.start();
+    
+    window.addEventListener('online', function() {
+      debug('[ONLINE]');
+      geoHelper.reconnect();
+    });
+    
+    window.addEventListener('offline', function() {
+      debug('[OFFLINE]');
+      geoHelper.stop();
+    });
+    
+    // window.addEventListener('resize', function(evt) {
+    //   debug('[RESIZE]');
+    //   //console.dir(evt);
+    //   //document.querySelector('#map').setAttribute('style', 'height: 800px;');
+    // });
+    
+    /*global fullScreen*/
+    /*global exitFullScreen*/
+    
+    // var flag = false;
+
+    // document.querySelector('#fullScreen').addEventListener('click', function() {
+    //   debug('CLICK');
+    //   if(flag) {
+    //     exitFullScreen();
+    //   } else {
+    //     fullScreen();
+    //   }
+    //   flag = !flag;
+    // }, false);
+    
+    // /*global webkitSpeechRecognition*/
+    // document.querySelector('#test').addEventListener('click', function() {
+    //   debug('CLICK');
+    //   if(window['webkitSpeechRecognition']) {
+    //     var recognition = new webkitSpeechRecognition();
+    //     recognition.continuous = true;
+    //     recognition.interimResults = true;
+    //     recognition.lang = "zh-CN";
+    //     recognition.onresult = function(event) {
+    //       if(event.results.length > 0 && event.results[0].length > 0) {
+    //         debug(event.results[0][0].transcript + '('+event.results[0].isFinal+','+event.results[0][0].confidence+')');
+    //       } else {
+    //         debug('--1--');
+    //       }
+    //     };
+    //     recognition.start();
+    //   }
+    // }, false);
+  }, false);
+  </script>
+</head>
+<body>
+  <!--<button id="test">Test</button>-->
+  <!--<button id="fullScreen">FullScreen</button>-->
+  <div id="map"></div>
+  <div id="content"></div>
+</body>
+</html>

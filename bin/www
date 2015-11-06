@@ -21,6 +21,53 @@ app.set('port', port);
  */
 var server = http.createServer(app);
 
+
+/**
+ * Mongodb
+ */
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+
+var url = 'mongodb://localhost:27017/geo';
+
+var g_db = null;
+
+var g_c = null;
+
+MongoClient.connect(url, function(err, db) {
+  if(err) {
+    console.dir(err);
+    return;
+  }
+  
+  g_db = db;
+
+  g_c = g_db.collection('watch');
+
+  // Promise.all([p]).then(function() {
+  //   db.close();
+  // }).catch(function(err) {
+  //   console.dir(err);
+  //   db.close();
+  // });
+});
+
+var addGeo = function(record, callback) {
+  record.serverDate = new Date();
+  
+  g_c.insert(record, function(err, result) {
+    if (err) {
+      console.dir(err);
+    } else {
+      if(callback) {
+          callback(record, result.result);
+      }
+    }
+  });
+  
+  //console.log('>>' + JSON.stringify(record));
+};
+
 /**
  * WebSocket...
  */
@@ -29,16 +76,53 @@ var url = require('url');
 var WebSocketServer = require('ws').Server;
 var wsServer = new WebSocketServer({ server: server });
 
+var idCount = 1;
+
+var jsonDateReviver = function(key, value) {
+  var exp = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
+  
+  var a = exp.exec(value);
+  
+  if(typeof value == 'string' && a) {
+    value = new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4], +a[5], +a[6]));
+  }
+  
+  return value;
+};
+
 wsServer.on('connection', function connection(ws) {
   var location = url.parse(ws.upgradeReq.url, true);
-  // you might use location.query.access_token to authenticate or share sessions
-  // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
+  
+  console.log('[CONNECT] ('+new Date()+') url := ' + ws.upgradeReq.url + '');
 
   ws.on('message', function(message, flag) {
-    console.log('[received] (%s): %s', JSON.stringify(flag), JSON.stringify(message));
+    message = JSON.parse(message, jsonDateReviver);
+    
+    switch(message.action) {
+      case 'data':
+        addGeo(message.payload, function(record, result) {
+          console.log(JSON.stringify(record));
+          if(result.ok != 1) {
+            console.error('ERROR : ' + result);
+          }
+        });
+        break;
+      case 'ping':
+        //Ignore...
+        break;
+      default:
+        //console.log(message);
+        break;
+    }
+  });
+  
+  ws.on('close', function() {
+    console.log('[CLOSE]' + new Date());
   });
 
-  ws.send('something');
+  ws.send(JSON.stringify({id: idCount}));
+  
+  idCount++;
 });
 
 /**
