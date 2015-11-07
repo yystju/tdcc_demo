@@ -15,6 +15,7 @@
     "serve-favicon": "~2.2.0",
     "ws": "^0.8.0",
     "http-proxy": "^1.11.2",
-    "mongodb": "^2.0.45"
+    "mongodb": "^2.0.45",
+    "xmlreader": "^0.2.3"
   }
 }

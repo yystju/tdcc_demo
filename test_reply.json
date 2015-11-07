@@ -1,0 +1,5 @@
+[
+    {"pattern": "你好", "reply": ["你好","你好不好？","啊？","嘛事儿？"]},
+    {"pattern": "hello", "reply": ["yes?", "hey~", "what's up, dude?", "Yo~"]},
+    {"pattern": "^(test|测试).*$", "isRegExp": true, "reply": ["测个头阿~", "你测试我放心~"]}
+]
