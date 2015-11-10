@@ -93,7 +93,7 @@ var jsonDateReviver = function(key, value) {
 wsServer.on('connection', function connection(ws) {
   var location = url.parse(ws.upgradeReq.url, true);
   
-  console.log('[CONNECT] ('+new Date()+') url := ' + ws.upgradeReq.url + '');
+  console.log('[CONNECT] ('+new Date()+') url := ' + JSON.stringify(location) + '');
 
   ws.on('message', function(message, flag) {
     message = JSON.parse(message, jsonDateReviver);

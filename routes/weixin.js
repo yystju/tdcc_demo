@@ -60,22 +60,25 @@ router.post('/', function(req, res, next) {
         
         var xml = res.xml; //Weixin root.
         
-        console.log('xml.MsgType : ' + xml.MsgType.at(0).text());
+        var msgType = xml.MsgType.at(0).text();
+        
+        console.log('msgType : ' + msgType);
         
         var from = xml.FromUserName.at(0).text();
         var to = xml.ToUserName.at(0).text();
         var createDate = xml.CreateTime.at(0).text();
-        var msgId = xml.MsgId.at(0).text();
         
         console.log('FromUserName : ' + from);
         console.log('ToUserName : ' + to);
         console.log('CreateTime : ' + createDate);
-        console.log('MsgId : ' + msgId);
         
         var retMsg = '';
         
-        switch(xml.MsgType.at(0).text()) {
+        switch(msgType) {
         case 'text':
+          var msgId = xml.MsgId.at(0).text();
+          console.log('MsgId : ' + msgId);
+        
           var content = xml.Content.at(0).text();
           console.log('Content : ' + content);
           
@@ -92,6 +95,9 @@ router.post('/', function(req, res, next) {
                     '<Content><![CDATA['+msg+']]></Content></xml>';
           break;
         case 'location':
+          var msgId = xml.MsgId.at(0).text();
+          console.log('MsgId : ' + msgId);
+        
           var longitude = xml.Location_Y.at(0).text();
           console.log('longitude : ' + longitude);
           
@@ -107,6 +113,12 @@ router.post('/', function(req, res, next) {
                     '<CreateTime>'+(new Date()).getTime()+'</CreateTime>'+
                     '<MsgType><![CDATA[text]]></MsgType>'+
                     '<Content><![CDATA['+msg+']]></Content></xml>';
+          break;
+        case 'event':
+          var eventType = xml.Event.at(0).text();
+          console.log('eventType : ' + eventType);
+          var eventKey = xml.EventKey.at(0).text();
+          console.log('eventKey : ' + eventKey);
           break;
         default:
           outerRes.send('');

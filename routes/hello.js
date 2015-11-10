@@ -114,6 +114,56 @@
     });
   };
   
+  //'https://api.weixin.qq.com/shakearound/account/register?access_token=ACCESS_TOKEN'
+  var apply4ShakeAround = function(token) {
+    var data = {
+      "name": "石全",
+      "phone_number": "15802243175",
+      "email": "quan.shi@volvo.com",
+      "industry_id": "0308",
+      "qualification_cert_urls": [
+      ],
+      "apply_reason": "测试服务号使用摇一摇功能"
+    };
+    
+    var txt = JSON.stringify(data);
+    
+    return new Promise(function(resolve, reject) {
+      var options = {
+          host: 'api.weixin.qq.com',
+          port: 443,
+          path: '/shakearound/account/register?access_token=' + token,
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Content-Length': txt.length
+          }
+        };
+    
+        var req = https.request(options, function(res) {
+          var output = '';
+          console.log(options.host + ':' + res.statusCode);
+          res.setEncoding('utf8');
+          
+          res.on('data', function (chunk) {
+              output += chunk;
+          });
+      
+          res.on('end', function() {
+            resolve(output);
+          });
+        });
+        
+        req.on('error', function(err) {
+          reject(err);
+        });
+      
+        req.write(txt + '\n');
+      
+        req.end();
+    });
+  };
+  
   //'https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN'
   
   /* GET users listing. */
@@ -124,8 +174,12 @@
     
     p.then(function(token) {
       console.log('token : ' + token);
-      getWeixinServerList(token).catch(errorHandler).then(function(serverList) {
-        console.log(JSON.stringify(serverList));
+      // getWeixinServerList(token).catch(errorHandler).then(function(serverList) {
+      //   console.log(JSON.stringify(serverList));
+      // }).catch(errorHandler);
+      
+      apply4ShakeAround(token).then(function(out) {
+        console.log(out);
       }).catch(errorHandler);
     });
     res.send('--1--');
