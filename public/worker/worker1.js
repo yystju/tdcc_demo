@@ -14,34 +14,37 @@ var txt = '<<';
 var count = 0;
 
 onmessage = function(evt) {
-    txt = evt.data;
+    //txt = evt.data;
+    
+    debug('MSG');
+    
     count = 0;
 };
 
-var ihandler = setInterval(function() {
-    debug('' + txt + ' : ' + count);
+// var ihandler = setInterval(function() {
+//     debug('' + txt + ' : ' + count);
     
-    count++;
+//     count++;
     
-    postMessage({'action': 'work', 'data': [count + 1, count + 2, count + 3, count + 4]});
+//     postMessage({'action': 'work', 'data': [count + 1, count + 2, count + 3, count + 4]});
     
-    try {
-        var s = new WebSocket('wss://prj01-yystju.c9.io/geo', ['geoinfo']);
+//     try {
+//         // var s = new WebSocket('wss://prj01-yystju.c9.io/geo', ['geoinfo']);
         
-        s.onmessage = function (evt) {
-            debug('[MESSAGE] := ' + JSON.stringify(evt.data));
-        };
+//         // s.onmessage = function (evt) {
+//         //     debug('[MESSAGE] := ' + JSON.stringify(evt.data));
+//         // };
         
-        s.onopen = function () {
-            debug('[OPEN] STATUS := ' + JSON.stringify(s));
+//         // s.onopen = function () {
+//         //     debug('[OPEN] STATUS := ' + JSON.stringify(s));
             
-            s.send(JSON.stringify({'action': 'ping'}));
+//         //     s.send(JSON.stringify({'action': 'ping'}));
             
-            s.close();
-        };
-    } catch (e) {
-        debug('ERROR:' + e.message);
-    }
-}, 1000);
+//         //     s.close();
+//         // };
+//     } catch (e) {
+//         debug('ERROR:' + e.message);
+//     }
+// }, 1000);
 
 debug('[FINISHED]');

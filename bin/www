@@ -9,6 +9,8 @@ var debug = require('debug')('TDCC:server');
 
 var http = require('http');
 
+var uuid = require('uuid');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -76,8 +78,6 @@ var url = require('url');
 var WebSocketServer = require('ws').Server;
 var wsServer = new WebSocketServer({ server: server });
 
-var idCount = 1;
-
 var jsonDateReviver = function(key, value) {
   var exp = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
   
@@ -120,9 +120,7 @@ wsServer.on('connection', function connection(ws) {
     console.log('[CLOSE]' + new Date());
   });
 
-  ws.send(JSON.stringify({id: idCount}));
-  
-  idCount++;
+  ws.send(JSON.stringify({id: uuid.v4()}));
 });
 
 /**

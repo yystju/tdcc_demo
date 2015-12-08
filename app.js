@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var hello = require('./routes/hello');
 var weixin = require('./routes/weixin');
 
+var sse = require('./routes/sse');
+
 var app = express();
 
 // view engine setup
@@ -24,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/weixin', weixin);
 app.use('/hello', hello);
+app.use('/sse', sse);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

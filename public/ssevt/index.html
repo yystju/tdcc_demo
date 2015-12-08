@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="TDCC Lecture Gallery">
+    <title>Server-Sent Events Test</title>
+    <style type="text/css">
+    html {
+      position: relative;
+      min-height: 100%;
+    }
+    #d1 {
+      width: 100%;
+      height: 480px;
+      border: 1px solid gray;
+    }
+    </style>
+    <script type="text/javascript">
+      /*global EventSource*/
+      window.addEventListener('DOMContentLoaded', function() {
+        if(typeof(EventSource) !== 'undefined') {
+          var s = new EventSource("../sse");
+          
+          s.onmessage = function(event) {
+            console.log('[message]');
+            console.dir(event);
+            document.querySelector('#d1').innerHTML += (event.data + '<br/>');
+          };
+        }
+      }, false);
+    </script>
+  </head>
+  <body>
+    <div id="d1"></div>
+  </body>
+</html>
