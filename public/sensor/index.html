@@ -6,26 +6,27 @@
 	<script type="text/javascript">
 	window.addEventListener('DOMContentLoaded', function() {
 		var content = document.querySelector('#content');
+
 		var debug = function(msg) {
 			var r = document.createElement('div');
-			
 			r.setAttribute('msg');
 			r.innerHTML = '' + JSON.stringify(msg);
 			content.appendChild(r);
 		};
-		window.addEventListener("devicemotion", function(evt) {
-			console.log('[devicemotion]');
-			console.dir(evt.acceleration);
-			console.dir(evt.accelerationIncludingGravity);
-			console.dir(evt.rotationRate);
-			debug(evt);
-		}, false);
+		
+		// window.addEventListener("devicemotion", function(evt) {
+		// 	debug('[devicemotion]');
+		// 	console.dir(evt.acceleration);
+		// 	console.dir(evt.accelerationIncludingGravity);
+		// 	console.dir(evt.rotationRate);
+		// 	debug(evt);
+		// }, false);
 		
 		window.addEventListener("deviceorientation", function(evt) {
-			console.log('[deviceorientation]');
-			console.dir(evt.acceleration);
-			console.dir(evt.accelerationIncludingGravity);
-			console.dir(evt.rotationRate);
+			//debug('[deviceorientation]');
+			//console.dir(evt.acceleration);
+			//console.dir(evt.accelerationIncludingGravity);
+			//console.dir(evt.rotationRate);
 			debug(evt);
 		}, false);
 	}, false);
