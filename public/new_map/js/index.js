@@ -5,7 +5,11 @@
 /*global screenLockHelper*/
 
 window.addEventListener('DOMContentLoaded', function() {
-  var DEBUG = true;
+  var DEBUG = false;
+  
+  var bd = document.body;
+  
+  bd.setAttribute('class', bd.getAttribute('class') + ' debugabled');
   
   var contentDiv = document.querySelector('#debugger');
   
@@ -67,8 +71,8 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 	};
   
-  screenLockHelper.debug = debug;
-  geoHelper.debug = debug;
+  //screenLockHelper.debug = debug;
+  //geoHelper.debug = debug;
 
   screenLockHelper.onIntervalCheck = function() {
     geoHelper.ping();
