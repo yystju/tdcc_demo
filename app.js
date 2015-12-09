@@ -10,6 +10,8 @@ var weixin = require('./routes/weixin');
 
 var sse = require('./routes/sse');
 
+var qr = require('./routes/qr');
+
 var app = express();
 
 // view engine setup
@@ -27,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/weixin', weixin);
 app.use('/hello', hello);
 app.use('/sse', sse);
+app.use('/qr', qr);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

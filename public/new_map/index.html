@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>New Map Test</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="no">
+	<meta name="mobile-web-app-capable" content="no">
+  <meta name="author" content="Quan Shi <quan.shi@volvo.com>">
+  <meta name="description" content="TDCC New Map Test">
+  
+  <link rel="icon" href="./favicon.ico" />
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="./css/index.css" />
+  
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  
+  <!--<script type="text/javascript" src="./js/angular.js"></script>-->
+  <script type="text/javascript" src="./js/angular.min.js"></script>
+  
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=NDouwHcPsFGTCV1k1QaSUUgW"></script>
+  
+  <script type="text/javascript" src="./js/ScreenLockHelper.js"></script>
+  <script type="text/javascript" src="./js/GeoHelper.js"></script>
+  
+  <script type="text/javascript" src="./js/index.js"></script>
+  <script type="text/javascript" src="./js/tdcc_controller.js"></script>
+</head>
+<body ng-app="TDCCApp" ng-controller="MainController">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="javascript:void(0);">TDCC New Map Test</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="javascript:void(0);"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+          <li><a href="javascript:void(0);" data-toggle="modal" data-target="#qrCodeDialog"><span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span></a></li>
+        </ul>
+        <form id="userForm" class="navbar-form navbar-right">
+          <span class="form-group input-group">
+            <label for="userName">VCNID:</label>
+            <input type="text" class="form-control" id="userName" name="userName" placeholder="v0cn### | a0#####" ng-model="userInfo.userName" ng-change="updateUserInfo();">
+          </span>
+          <span class="form-group input-group">
+            <label for="shuttleLine">Shuttle Line:</label>
+            <select class="form-control" id="shuttleLine" ng-model="userInfo.shuttleLine" ng-change="updateUserInfo();">
+              <option>#1</option>
+              <option>#2</option>
+              <option>#3</option>
+              <option>#4</option>
+              <option>#5</option>
+              <option>#6</option>
+              <option>#7</option>
+            </select>
+          </span>
+        </form>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <div class="container">
+    <div id="map"></div>
+    <div id="debugger"></div>
+  </div>
+  <div class="modal fade" id="qrCodeDialog" tabindex="-1" role="dialog" aria-labelledby="qrCodeDialogModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="qrCodeDialogModalLabel">Visit this page</h4>
+        </div>
+        <div class="modal-body text-center">
+          <img src="{{qrContent}}" class="img-thumbnail" alt="QR Code" width="330" height="330">
+          <div>{{pageURL}}</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+</body>
+</html>
