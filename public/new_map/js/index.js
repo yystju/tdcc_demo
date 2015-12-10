@@ -4,18 +4,17 @@
 /*global geoHelper*/
 /*global screenLockHelper*/
 
+/*global EventSource*/
+
+var DEBUG = false;
+ 
 window.addEventListener('DOMContentLoaded', function() {
-  var DEBUG = false;
-  
-  var bd = document.body;
-  
-  bd.setAttribute('class', bd.getAttribute('class') + ' debugabled');
-  
   var contentDiv = document.querySelector('#debugger');
   
   var debug = function(message) {
     if(DEBUG) {
       var d = document.createElement('div');
+      
       d.innerHTML = message;
       
       contentDiv.appendChild(d);
@@ -23,6 +22,13 @@ window.addEventListener('DOMContentLoaded', function() {
       contentDiv.scrollTop = contentDiv.scrollHeight;
     }
   };
+  
+  if(DEBUG) {
+    contentDiv.setAttribute('class', contentDiv.getAttribute('class') + ' debuggable');
+      
+    screenLockHelper.debug = debug;
+    geoHelper.debug = debug;
+  }
   
   var map = new BMap.Map('map');
   var convertor = new BMap.Convertor();
@@ -70,12 +76,9 @@ window.addEventListener('DOMContentLoaded', function() {
   		});
     }
 	};
-  
-  //screenLockHelper.debug = debug;
-  //geoHelper.debug = debug;
 
   screenLockHelper.onIntervalCheck = function() {
-    geoHelper.ping();
+    //geoHelper.ping();
   };
   
   screenLockHelper.onScreenReopen = function() {
@@ -135,4 +138,14 @@ window.addEventListener('DOMContentLoaded', function() {
     debug('[OFFLINE]');
     geoHelper.stop();
   });
+  
+  // if(typeof(EventSource) !== 'undefined') {
+  //   var sse = new EventSource("../sse");
+            
+  //   sse.onmessage = function(event) {
+  //     debug('[message]');
+  //     debug(event);
+  //     document.querySelector('#d1').innerHTML += (event.data + '<br/>');
+  //   };
+  // }
 }, false);

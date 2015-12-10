@@ -70,6 +70,12 @@ var addGeo = function(record, callback) {
   //console.log('>>' + JSON.stringify(record));
 };
 
+var searchForNearBy = function() {
+  g_c.find({
+    
+  });
+};
+
 /**
  * WebSocket...
  */
@@ -105,6 +111,8 @@ wsServer.on('connection', function connection(ws) {
           if(result.ok != 1) {
             console.error('ERROR : ' + result);
           }
+          
+          
         });
         break;
       case 'ping':
