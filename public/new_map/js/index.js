@@ -6,7 +6,7 @@
 
 /*global EventSource*/
 
-var DEBUG = false;
+var DEBUG = true;
  
 window.addEventListener('DOMContentLoaded', function() {
   var contentDiv = document.querySelector('#debugger');
@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded', function() {
   if(DEBUG) {
     contentDiv.setAttribute('class', contentDiv.getAttribute('class') + ' debuggable');
       
-    screenLockHelper.debug = debug;
+    //screenLockHelper.debug = debug;
     geoHelper.debug = debug;
   }
   
@@ -78,7 +78,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	};
 
   screenLockHelper.onIntervalCheck = function() {
-    //geoHelper.ping();
+    geoHelper.ping();
   };
   
   screenLockHelper.onScreenReopen = function() {
@@ -87,6 +87,10 @@ window.addEventListener('DOMContentLoaded', function() {
   };
   
   var watchID = null;
+  
+  geoHelper.onRemoteMessage = function(data) {
+    debug('-- REMOTE... --');
+  };
   
   geoHelper.onready = function() {
     var geoOption = {

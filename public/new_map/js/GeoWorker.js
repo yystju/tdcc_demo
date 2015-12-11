@@ -36,6 +36,9 @@
             if(!isReconnect && data.id) {
               b.id = data.id;
               debug('id := ' + b.id);
+            } else if(!isReconnect && data) {
+              //debug('[RESPONSE] : ' + JSON.stringify(data));
+              postMessage({'action': 'remoteMessage', 'payload': data});
             }
           }
         };

@@ -36,6 +36,8 @@ var g_db = null;
 
 var g_c = null;
 
+var DISTANCE = 5000; // In meters.
+
 MongoClient.connect(url, function(err, db) {
   if(err) {
     console.dir(err);
@@ -70,9 +72,38 @@ var addGeo = function(record, callback) {
   //console.log('>>' + JSON.stringify(record));
 };
 
-var searchForNearBy = function() {
-  g_c.find({
+var searchForNearBy = function(userName, position, distance) {
+  return new Promise(function(resolve, reject) {
+    var dateStart = new Date();
+    dateStart.setMinutes(dateStart.getMinutes() - 5);
+    var dateEnd = new Date();
+    var cursor = g_c.find({
+      serverDate: {'$lt': dateEnd}, 
+      serverDate: {'$gt': dateStart}, 
+      position: {
+        $near: {$geometry: {type: 'Point', coordinates: position}, $maxDistance: distance}
+      }, 
+      'userName': {$ne: userName}
+    }, {'userInfo.userName': 1, 'position.coordinates': 1, 'serverDate': 1, _id: 0}).sort({'userInfo.userName': 1});
     
+    var arry = {};
+    
+    cursor.each(function(err, doc) {
+      if(err) {
+        reject(err);
+      }
+      if (doc != null) {
+        if(!arry[doc.userInfo.userName]) {
+          arry[doc.userInfo.userName] = {'coordinates': doc.position.coordinates, 'serverDate': doc.serverDate};
+        } else {
+          if(arry[doc.userInfo.userName].serverDate < doc.serverDate) {
+            arry[doc.userInfo.userName] = {'coordinates': doc.position.coordinates, 'serverDate': doc.serverDate};
+          }
+        }
+      } else {
+        resolve(arry);
+      }
+    });
   });
 };
 
@@ -106,13 +137,17 @@ wsServer.on('connection', function connection(ws) {
     
     switch(message.action) {
       case 'data':
-        addGeo(message.payload, function(record, result) {
-          console.log(JSON.stringify(record));
+        var n = message.payload;
+        addGeo(n, function(record, result) {
+          //console.log(JSON.stringify(record));
           if(result.ok != 1) {
             console.error('ERROR : ' + result);
+          } else {
+            searchForNearBy(n.userInfo.userName, n.position.coordinates, DISTANCE).then(function(arry) {
+              //console.log(arry);
+              ws.send(JSON.stringify(arry));
+            });
           }
-          
-          
         });
         break;
       case 'ping':

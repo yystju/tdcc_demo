@@ -4,6 +4,7 @@
     var gh = scope['geoHelper'];
     
     gh.onready = null; //event handler...
+    gh.onRemoteMessage = null; //event handler...
     
     gh.debug = function(msg) {
       if(console) console.log(msg);
@@ -21,6 +22,13 @@
         switch(evt.data.action) {
         case 'debug':
           gh.debug('[GEO] ' + evt.data.msg);
+          break;
+        case 'remoteMessage':
+          gh.debug('[GEO] remoteMessage...');
+          
+          if(gh.onRemoteMessage) {
+            gh.onRemoteMessage(evt.data.payload);
+          }
           break;
         case 'ready':
           gh.debug('[GEO] ready...');
