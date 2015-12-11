@@ -38,7 +38,7 @@
           }
           break;
         default:
-          debug('[GEO] UNKNOWN ACTION : ' + evt.data.action + ', payload : ' + evt.data.payload);
+          gh.debug('[GEO] UNKNOWN ACTION : ' + evt.data.action + ', payload : ' + evt.data.payload);
           break;
         }
       }
