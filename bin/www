@@ -75,7 +75,7 @@ var addGeo = function(record, callback) {
 var searchForNearBy = function(userName, position, distance) {
   return new Promise(function(resolve, reject) {
     var dateStart = new Date();
-    dateStart.setMinutes(dateStart.getMinutes() - 5);
+    dateStart.setMinutes(dateStart.getMinutes() - 2);
     var dateEnd = new Date();
     var cursor = g_c.find({
       serverDate: {'$lt': dateEnd}, 
@@ -83,8 +83,8 @@ var searchForNearBy = function(userName, position, distance) {
       position: {
         $near: {$geometry: {type: 'Point', coordinates: position}, $maxDistance: distance}
       }, 
-      'userName': {$ne: userName}
-    }, {'userInfo.userName': 1, 'position.coordinates': 1, 'serverDate': 1, _id: 0}).sort({'userInfo.userName': 1});
+      'userInfo.userName': {$ne: userName}
+    }, {'userInfo.userName': 1, 'position.coordinates': 1, 'serverDate': 1, _id: 0}).sort({'userInfo.userName': 1, 'serverDate': 1});
     
     var arry = {};
     
@@ -139,12 +139,12 @@ wsServer.on('connection', function connection(ws) {
       case 'data':
         var n = message.payload;
         addGeo(n, function(record, result) {
-          //console.log(JSON.stringify(record));
+          console.log(JSON.stringify(record));
           if(result.ok != 1) {
             console.error('ERROR : ' + result);
           } else {
             searchForNearBy(n.userInfo.userName, n.position.coordinates, DISTANCE).then(function(arry) {
-              //console.log(arry);
+              console.log(arry);
               ws.send(JSON.stringify(arry));
             });
           }

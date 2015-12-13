@@ -1,5 +1,7 @@
+
+
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 var localStream = null;
 
@@ -67,6 +69,7 @@ function togglePaneVisible(selector) {
 	}
 }
 
+/*global MediaStreamTrack*/
 function onTakePictureLoad(element) {
 	if(window.MediaStreamTrack) {
 		MediaStreamTrack.getSources(function(sources) {
@@ -74,7 +77,6 @@ function onTakePictureLoad(element) {
 			
 			for (var i = 0; i < sources.length; ++i) {
 				var source = sources[i];
-				
 				
 				if(source.kind  == 'video') {
 					hasVideoDevice = true;
@@ -97,7 +99,6 @@ function onTakePictureLoad(element) {
 }
 
 function onTakePictureUnLoad(element) {
-	
 }
 
 function onCapturePicPaneLoad(element) {
@@ -132,8 +133,15 @@ function onCapturePicPaneLoad(element) {
 }
 
 function onCapturePicPaneUnLoad(element) {
-	document.querySelector('#pictureVideo').pause();
-	if(localStream) localStream.stop();
+	if(localStream) {
+		var tks = localStream.getVideoTracks();
+		for(var i = 0; i < tks.length; ++i) {
+			tks[i].stop();
+		}
+	}
+	var v = document.querySelector('#pictureVideo');
+	v.pause();
+	v.src = '';
 }
 
 function _f(s) {
@@ -392,19 +400,19 @@ window.addEventListener('load', function() {
 	pictureCanvas.addEventListener('drop', processPictureFile, false);
 	
 	pictureCanvas.addEventListener('mousedown', function(evt) {
-		console.log(evt);
+		//console.log(evt);
 	}, false);
 	
 	pictureCanvas.addEventListener('mousemove', function(evt) {
-		console.log(evt);
+		//console.log(evt);
 	}, false);
 	
 	pictureCanvas.addEventListener('mouseup', function(evt) {
-		console.log(evt);
+		//console.log(evt);
 	}, false);
 	
 	pictureCanvas.addEventListener('mouseout', function(evt) {
-		console.log(evt);
+		//console.log(evt);
 	}, false);
 	
 	pictureCanvas.addEventListener('touchstart', function(evt) {

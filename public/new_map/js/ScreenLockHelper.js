@@ -28,7 +28,7 @@
           
           break;
         case 'interval_check':
-          sh.debug('[interval_check] ' + evt.data.payload);
+          //sh.debug('[interval_check] ' + evt.data.payload);
           
           if(sh.onIntervalCheck) sh.onIntervalCheck(evt.data.payload);
           

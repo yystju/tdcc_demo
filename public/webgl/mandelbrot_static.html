@@ -79,7 +79,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	
 	gl.compileShader(fragmentShader);
 	
-	var compiled = gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS);
+	compiled = gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS);
 	
 	if(!compiled) {
 		var lastError = gl.getShaderInfoLog(fragmentShader);
@@ -101,6 +101,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
 	
 	if(!linked) {
+		
 		var lastError = gl.getProgramInfoLog(program);
 		
 		alert(lastError);
@@ -130,6 +131,10 @@ window.addEventListener('DOMContentLoaded', function() {
 	</script>
 	
 	<script type="x-shader/x-vertex" id="vertexShader">
+	#pragma STDGL
+	#pragma optimize(off)
+	#pragma debug(off)
+	
 	attribute vec2 a_position;
 	
 	varying vec4 vVertexPosition;
@@ -141,6 +146,10 @@ window.addEventListener('DOMContentLoaded', function() {
 	</script>
 	
 	<script type="x-shader/x-fragment" id="fragmentShader">
+	#pragma STDGL
+	#pragma optimize(off)
+	#pragma debug(off)
+	
 	precision mediump float;
 	
 	varying vec4 vVertexPosition;

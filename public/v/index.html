@@ -1,0 +1,363 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Two Cube</title>
+	<style type="text/css">
+	html, body, document {
+		padding: 0px;
+		margin: 0px;
+	}
+
+	#content {
+		border: 1px solid gray;
+	}
+
+	#c1, #c2 {
+	}
+	
+	.canvasBorder {
+		display: inline;
+	}
+	</style>
+	<script type="text/javascript">
+		function createVertexShader(gl, scriptSelector) {
+			var elmt = document.querySelector(scriptSelector);
+			
+			var script = elmt.innerText;
+			
+			var shader = gl.createShader(gl.VERTEX_SHADER);
+			
+			gl.shaderSource(shader, script);
+			
+			gl.compileShader(shader);
+			
+			if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+				var lastError = gl.getShaderInfoLog (shader);
+				console.error('Failed to link vertex shader : ' + lastError);
+				gl.deleteShader(shader);
+				shader = null;
+			}
+			
+			return shader;
+		}
+
+		function createFragmentShader(gl, scriptSelector) {
+			var elmt = document.querySelector(scriptSelector);
+			
+			var script = elmt.innerText;
+			
+			var shader = gl.createShader(gl.FRAGMENT_SHADER);
+			
+			gl.shaderSource(shader, script);
+			
+			gl.compileShader(shader);
+			
+			if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+				var lastError = gl.getShaderInfoLog (shader);
+				console.error('Failed to link fragment shader : ' + lastError);
+				gl.deleteShader(shader);
+				shader = null;
+			}
+			
+			return shader;
+		}
+
+		function createProgram(gl, shaders) {
+			var shaderProgram = gl.createProgram();
+			
+			for(var i = 0; i < shaders.length; ++i) {
+				gl.attachShader(shaderProgram, shaders[i]);
+			}
+			
+			gl.linkProgram(shaderProgram);
+			
+			if(!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+				var lastError = gl.getProgramInfoLog (shaderProgram);
+				console.error('Failed to link program : ' + lastError);
+				gl.deleteProgram(shaderProgram);
+				shaderProgram = null;
+			}
+			
+			return shaderProgram;
+		}
+	</script>
+	
+	<script type="text/javascript">
+		function initVertexBuffers(gl, shaderProgram) {
+			// Create a cube
+			//    v6----- v5
+			//   /|      /|
+			//  v1------v0|
+			//  | |     | |
+			//  | |v7---|-|v4
+			//  |/      |/
+			//  v2------v3
+			var verticesColors = new Float32Array([
+				// Vertex coordinates and color
+				1.0,  1.0,  1.0,     1.0,  1.0,  1.0, // v0 White
+				-1.0,  1.0,  1.0,     1.0,  0.0, 1.0, // v1 Magenta
+				-1.0, -1.0,  1.0,     1.0,  0.0, 0.0, // v2 Red
+				1.0, -1.0,  1.0,     1.0,  1.0,  0.0, // v3 Yellow
+				1.0, -1.0, -1.0,     0.0,  1.0,  0.0, // v4 Green
+				1.0,  1.0, -1.0,     0.0,  1.0,  1.0, // v5 Cyan
+				-1.0,  1.0, -1.0,     0.0,  0.0, 1.0, // v6 Blue
+				-1.0, -1.0, -1.0,     0.0,  0.0, 0.0, // v7 Black
+			]);
+
+			// Indices of the vertices
+			var indices = new Uint8Array([
+				0, 1, 2,   0, 2, 3,    // front
+				0, 3, 4,   0, 4, 5,    // right
+				0, 5, 6,   0, 6, 1,    // up
+				1, 6, 7,   1, 7, 2,    // left
+				7, 4, 3,   7, 3, 2,    // down
+				4, 7, 6,   4, 6, 5     // back
+			]);
+
+			// Create a buffer object
+			var vertexColorBuffer = gl.createBuffer();
+			var indexBuffer = gl.createBuffer();
+			if (!vertexColorBuffer || !indexBuffer) {
+				return -1;
+			}
+
+			// Write the vertex coordinates and color to the buffer object
+			gl.bindBuffer(gl.ARRAY_BUFFER, vertexColorBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);
+
+			var FSIZE = verticesColors.BYTES_PER_ELEMENT;
+			
+			// Assign the buffer object to a_Position and enable the assignment
+			var a_Position = gl.getAttribLocation(shaderProgram, 'a_Position');
+			
+			if(a_Position < 0) {
+				console.log('Failed to get the storage location of a_Position');
+				return -1;
+			}
+			gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, FSIZE * 8, 0);
+			gl.enableVertexAttribArray(a_Position);
+			// Assign the buffer object to a_Color and enable the assignment
+			var a_Color = gl.getAttribLocation(shaderProgram, 'a_Color');
+			if(a_Color < 0) {
+				console.log('Failed to get the storage location of a_Color');
+				return -1;
+			}
+			gl.vertexAttribPointer(a_Color, 3, gl.FLOAT, false, FSIZE * 8, FSIZE * 3);
+			gl.enableVertexAttribArray(a_Color);
+			
+			var a_TexCoord = gl.getAttribLocation(shaderProgram, 'a_TexCoord');
+			gl.vertexAttribPointer(a_TexCoord, 2, gl.FLOAT, false, FSIZE * 8, FSIZE * 5);
+			gl.enableVertexAttribArray(a_TexCoord);
+
+			// Write the indices to the buffer object
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+			
+			return indices.length;
+		}
+		
+		function translate(e, x, y, z) {
+			e[12] += e[0] * x + e[4] * y + e[8]  * z;
+			e[13] += e[1] * x + e[5] * y + e[9]  * z;
+			e[14] += e[2] * x + e[6] * y + e[10] * z;
+			e[15] += e[3] * x + e[7] * y + e[11] * z;
+			return e;
+		};
+		
+		function getLookAtMatrix(eye, center, up) {
+			var f = [1.0, 1.0, 1.0];
+			
+			f[0] = eye[0] - center[0];
+			f[1] = eye[1] - center[1];
+			f[2] = eye[2] - center[2];
+			
+			lenF = Math.sqrt(f[0] * f[0] + f[1] * f[1] + f[2] * f[2]);
+			
+			f[0] /= lenF;
+			f[1] /= lenF;
+			f[2] /= lenF;
+			
+			var s = [1.0, 1.0, 1.0];
+			
+			s[0] = f[1] * up[2] - f[2] * up[1];
+			s[1] = f[2] * up[0] - f[0] * up[2];
+			s[2] = f[0] * up[1] - f[1] * up[0];
+			
+			lenS = Math.sqrt(s[0] * s[0] + s[1] * s[1] + s[2] * s[2]);
+			
+			s[0] /= lenS;
+			s[1] /= lenS;
+			s[2] /= lenS;
+			
+			var u = [1.0, 1.0, 1.0];
+			
+			u[0] = s[1] * f[2] - s[2] * f[1];
+			u[1] = s[2] * f[0] - s[0] * f[2];
+			u[2] = s[0] * f[1] - s[1] * f[0];
+			
+			lenU = Math.sqrt(u[0] * u[0] + u[1] * u[1] + u[2] * u[2]);
+			
+			u[0] /= lenU;
+			u[1] /= lenU;
+			u[2] /= lenU;
+			
+			var matrix = translate([
+				s[0], u[0], f[0], 0.0,
+				s[1], u[1], f[1], 0.0,
+				s[2], u[2], f[2], 0.0,
+				 0.0,  0.0,  0.0, 1.0
+			], -eye[0], -eye[1], -eye[2]);
+
+			return matrix;
+		}
+		
+		function makePerspectiveMatrix(fov, aspect, near, far) {
+			var f = Math.tan(0.5 * (Math.PI - fov));
+			var r = 1.0 / (far - near);
+		
+			var perspective = [
+				f/aspect,	0.0, 			    0.0,  					0.0,
+				0.0, 		  f, 			    0.0,  					0.0,
+				0.0, 		0.0,  -(far + near) * r,  -1.0,
+				0.0, 		0.0,   			   -2.0 * far * near * r,  	0.0,
+			];
+			
+			return perspective;
+		}
+	
+		function draw(c, eye) {
+			var c1 = document.querySelector(c);
+			
+			var gl = c1.getContext('webgl');
+			
+			if(!gl) {
+				gl = c1.getContext('experimental-webgl');
+			}
+			
+			var pixelRatio = window.devicePixelRatio;
+			
+			//Adjust viewport
+			gl.viewportWidth = c1.clientWidth * pixelRatio;
+			gl.viewportHeight = c1.clientHeight * pixelRatio;
+			
+			var widthRatio = 1.0;
+			var heightRatio = 1.0;
+			
+			if(gl.viewportWidth >  gl.viewportHeight) {
+				heightRatio = gl.viewportHeight / gl.viewportWidth;
+			} else if(gl.viewportWidth < gl.viewportHeight) {
+				widthRatio =  gl.viewportWidth / gl.viewportHeight;
+			}
+			
+			gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+			
+			gl.enable(gl.DEPTH_TEST);
+			
+			gl.clearColor(0.0, 0.0, 0.0, 1.0);
+			
+			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+			
+			//Prepare program
+			var fs = createFragmentShader(gl, '#shader-fs');
+			var vx = createVertexShader(gl, '#shader-vertex');
+			
+			var program = createProgram(gl, [vx, fs]);
+			
+			gl.useProgram(program);
+			
+			var N = initVertexBuffers(gl, program);
+			
+			var perspectiveMatrixLocation = gl.getUniformLocation(program, 'u_PerspectiveMatrix');
+			
+			var perspectiveMatrix = new Float32Array(makePerspectiveMatrix(30, gl.viewportWidth/gl.viewportHeight, 1, 10));
+			
+			gl.uniformMatrix4fv(perspectiveMatrixLocation, false, perspectiveMatrix);
+			
+			var mvpMatrixLocation = gl.getUniformLocation(program, 'u_MvpMatrix');
+			
+			var mvpMatrix = new Float32Array(getLookAtMatrix(eye, [0, 0, 0], [0, 1, 0]));
+			
+			gl.uniformMatrix4fv(mvpMatrixLocation, false, mvpMatrix);
+			
+			var scaleMatrixLocation = gl.getUniformLocation(program, "u_scaleMatrix");
+			
+			var scaleMatrix = new Float32Array([
+				heightRatio, 0.0, 0.0, 0.0,
+				0.0, widthRatio, 0.0, 0.0,
+				0.0, 0.0, 1.0, 0.0,
+				0.0, 0.0, 0.0, 1.0
+			]);
+			
+			gl.uniformMatrix4fv(scaleMatrixLocation, false, scaleMatrix);
+			
+			var texture = gl.createTexture();
+			
+			var u_Sampler = gl.getUniformLocation(program, 'u_Sampler');
+			
+			var image = new Image();
+			
+			image.onload = function(){
+				gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+				
+				gl.activeTexture(gl.TEXTURE0);
+				
+				gl.bindTexture(gl.TEXTURE_2D, texture);
+				
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+				
+				gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+				
+				gl.uniform1i(u_Sampler, 0);
+				
+				gl.drawElements(gl.TRIANGLES, N, gl.UNSIGNED_BYTE, 0);
+			};
+			
+			image.src = './img/volvo_407x407.png';
+		}
+	
+		window.addEventListener('load', function() {
+			draw('#c1', [3 - 0.5, -3, 7]);
+			draw('#c2', [3 + 0.5, -3, 7]);
+		}, false);
+	</script>
+	
+	<script id="shader-fs" type="x-shader/x-fragment">
+		precision mediump float;
+		
+		varying vec4 v_color;
+		varying vec2 v_TexCoord;
+		
+		uniform sampler2D u_Sampler;
+		
+		void main(void) {
+			gl_FragColor = v_color * texture2D(u_Sampler, v_TexCoord);
+		}
+	</script>
+	
+	<script id="shader-vertex" type="x-shader/x-vertex">
+		attribute vec4 a_Position;
+		attribute vec4 a_Color;
+		
+		attribute vec2 a_TexCoord;
+		
+		uniform mat4 u_scaleMatrix;
+		uniform mat4 u_PerspectiveMatrix;
+		uniform mat4 u_MvpMatrix;
+		
+		varying vec4 v_color;
+		varying vec2 v_TexCoord;
+		
+		void main() {
+			gl_Position = u_PerspectiveMatrix * u_MvpMatrix * a_Position;
+			
+			v_color =  a_Color;
+			
+			v_TexCoord = a_TexCoord;
+		}
+	</script>
+</head>
+<body>
+	<div id="content"><div style="width: 1280px;"><div class="canvasBorder"><canvas id="c1" width="640" height="720"></canvas></div><div class="canvasBorder"><canvas id="c2" width="640" height="720"></canvas></div></div></div>
+</body>
+</html>

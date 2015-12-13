@@ -1,18 +1,22 @@
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8">
-	<title>Media Test -- WebCam</title>
-	<style type="text/css">
-	    #v1 {
-	        width: 640px;
-            height: 360px;
-            
-            -webkit-transition: all 0.5s;
-            transition: all 0.5s;
-	    }
-	    
-	    @-webkit-keyframes example {
+  <meta charset="UTF-8">
+  <title>Media Test -- WebCam</title>
+  <style type="text/css">
+      html, body {
+        margin: 5px;
+        padding: 0px;
+      }
+      #v1 {
+        width: 360px;
+        height: 180px;
+        
+        -webkit-transition: all 0.5s;
+        transition: all 0.5s;
+      }
+      
+      @-webkit-keyframes example {
             0%   {
                 -ms-transform: rotate(0deg);
                 -webkit-transform: rotate(0deg);
@@ -59,8 +63,8 @@
         }
         
         #v1:hover {
-            width: 1280px;
-            height: 720px;
+            width: 720px;
+            height: 360px;
             
             -webkit-animation-name: example;
             -webkit-animation-duration: 0.5s;
@@ -68,58 +72,64 @@
             animation-name: example;
             animation-duration: 0.5s;
             
-            +filter: blur(3px);
+            /*+filter: blur(3px);*/
         }
-	</style>
-	<script type="text/javascript">
-	
-	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-	
-	window.AudioContext = window.AudioContext || window.webkitAudioContext;
-	
-	window.addEventListener('DOMContentLoaded', function() {
-	   // //Check the media sources.
-	   // MediaStreamTrack.getSources(function(srcInfos) {
-	   //     for (var i = 0; i != srcInfos.length; ++i) {
-	   //         console.log('kind := ' + srcInfos[i].kind + ', id := ' + srcInfos[i].id + ', label := ' + srcInfos[i].label);
-	   //     }
-	   // });
-	    
-        var v1 = document.querySelector('#v1');
-	    
-	    var options = {video: {
-            mandatory: {
-                minWidth: 1280,
-                minHeight: 720
-            }
-        }, audio: false};
-
-        if(!navigator.getBattery) {
+  </style>
+  <script type="text/javascript">
+  /*global URL*/
+  
+  var printMediaDevices = function() {
+    navigator.mediaDevices.enumerateDevices().then(function(arry) {
+      console.log(JSON.stringify(arry));
+    });
+  };
+  
+  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+  
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  
+  window.addEventListener('DOMContentLoaded', function() {
+     // //Check the media sources.
+     // MediaStreamTrack.getSources(function(srcInfos) {
+     //     for (var i = 0; i != srcInfos.length; ++i) {
+     //         console.log('kind := ' + srcInfos[i].kind + ', id := ' + srcInfos[i].id + ', label := ' + srcInfos[i].label);
+     //     }
+     // });
+      if(!navigator.getBattery) {
             alert('navigator.getBattery is not supported.');
         }
 
         if(!navigator.vibrate) {
             alert('navigator.vibrate is not supported.');
         }
+      
+        var v1 = document.querySelector('#v1');
+      
+      var options = {video: {
+            mandatory: {
+                minWidth: 1280,
+                minHeight: 720
+            }
+        }, audio: false};
         
         if(!navigator.getUserMedia) {
             alert('navigator.getUserMedia is not supported.');
             return;
         }
-	    navigator.getUserMedia(options, function(stream) {
-	        console.log('URL := ' + URL.createObjectURL(stream));
-	        
-	        v1.addEventListener('loadedmetadata', function(evt) {
-	            console.log('[loadedmetadata]');
-	        }, false);
-	        
-	        v1.src = URL.createObjectURL(stream);
-	    }, function(err) {
-	        console.dir(err);
-	    });
-	    
-	    
-	   // var context = new AudioContext();
+      navigator.getUserMedia(options, function(stream) {
+          console.log('URL := ' + URL.createObjectURL(stream));
+          
+          v1.addEventListener('loadedmetadata', function(evt) {
+              console.log('[loadedmetadata]');
+          }, false);
+          
+          v1.src = URL.createObjectURL(stream);
+      }, function(err) {
+          console.dir(err);
+      });
+      
+      
+     // var context = new AudioContext();
 
     //     navigator.getUserMedia({audio: true}, function(stream) {
     //         var microphone = context.createMediaStreamSource(stream);
@@ -131,12 +141,12 @@
             
     //         //microphone.start(0);
     //     }, function(err) {
-	   //     console.dir(err);
-	   // });
-	}, false);
-	</script>
+     //     console.dir(err);
+     // });
+  }, false);
+  </script>
 </head>
 <body>
-	<video id="v1" autoplay="autoplay"></video>
+  <video id="v1" autoplay="autoplay"></video>
 </body>
 </html>

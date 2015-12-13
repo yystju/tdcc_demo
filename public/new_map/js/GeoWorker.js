@@ -85,7 +85,6 @@
     };
     
     b.ping = function() {
-      debug('--1-- isReady : ' + b.isReady);
       if(b.isReady) {
         b.s.send(JSON.stringify({'action': 'ping'}));
       }
@@ -95,8 +94,6 @@
       var data = JSON.stringify({'action': 'data', 'payload': {'id': b.id, 'userInfo': {'userName': b.userName, 'shuttleLine': b.shuttleLine},'position': {'type': 'Point', 'coordinates': position.coordinates}, 'clientDate': new Date(position.timestamp)}});
       
       debug('UPLOAD : ' + data);
-      
-      debug('--2-- isReady : ' + b.isReady);
       
       if(b.isReady) {
         b.s.send(data);
