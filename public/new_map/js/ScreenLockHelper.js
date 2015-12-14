@@ -34,7 +34,7 @@
           
           break;
         default:
-          sh.debug('[SCREEN LOCK] UNKNOWN ACTION : ' + evt.data.action + ', payload : ' + evt.data.payload);
+          //sh.debug('[SCREEN LOCK] UNKNOWN ACTION : ' + evt.data.action + ', payload : ' + evt.data.payload);
           break;
         }
       }

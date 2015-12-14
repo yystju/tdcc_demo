@@ -23,22 +23,26 @@
         case 'debug':
           gh.debug('[GEO] ' + evt.data.msg);
           break;
+        case 'id':
+          //gh.debug('[GEO] id : ' + id);
+          //TODO: Add Update ID event here.
+          break;
         case 'remoteMessage':
-          gh.debug('[GEO] remoteMessage...');
+          //gh.debug('[GEO] remoteMessage...');
           
           if(gh.onRemoteMessage) {
             gh.onRemoteMessage(evt.data.payload);
           }
           break;
         case 'ready':
-          gh.debug('[GEO] ready...');
+          //gh.debug('[GEO] ready...');
           
           if(gh.onready) {
             gh.onready(evt.data.payload);
           }
           break;
         default:
-          gh.debug('[GEO] UNKNOWN ACTION : ' + evt.data.action + ', payload : ' + evt.data.payload);
+          //gh.debug('[GEO] UNKNOWN ACTION : ' + evt.data.action + ', payload : ' + evt.data.payload);
           break;
         }
       }

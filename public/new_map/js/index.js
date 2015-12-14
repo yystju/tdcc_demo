@@ -15,6 +15,8 @@ window.addEventListener('DOMContentLoaded', function() {
     if(DEBUG) {
       var d = document.createElement('div');
       
+      // d.innerHTML = '(' + (new Date()) + ') -- ' + message;
+      
       d.innerHTML = message;
       
       contentDiv.appendChild(d);
@@ -30,10 +32,10 @@ window.addEventListener('DOMContentLoaded', function() {
     geoHelper.debug = debug;
   }
   
-  var testMedia = function(mediaString) {
-    var mm = window.matchMedia(mediaString);
-    return mm.matches;
-  }
+  // var testMedia = function(mediaString) {
+  //   var mm = window.matchMedia(mediaString);
+  //   return mm.matches;
+  // }
   
   var map = new BMap.Map('map');
   var convertor = new BMap.Convertor();
@@ -64,16 +66,16 @@ window.addEventListener('DOMContentLoaded', function() {
 	var panMap = function(position) {
     var now = new Date();
     
-    if(now - lastUpdate > 5000) {
+    if(now - lastUpdate > 500) {
       lastUpdate = now;
       
-      debug('[PAN MAP] @ ' + now);
+      //debug('[PAN MAP] @ ' + now);
       
   		convertor.translate([new BMap.Point(position.coords.longitude, position.coords.latitude)], 1, 5, function (data) {
   			if(data.status === 0) {
   				var bmapPoint = data.points[0];
   				
-  				debug('' + bmapPoint);
+  				//debug('mapped : ' + JSON.stringify(bmapPoint));
   				
   				map.clearOverlays();
   
@@ -81,7 +83,7 @@ window.addEventListener('DOMContentLoaded', function() {
   				
   				map.addOverlay(marker);
   				
-      		map.panTo(bmapPoint);
+      		map.setCenter(bmapPoint);
   			}
   		});
     }
@@ -100,13 +102,13 @@ window.addEventListener('DOMContentLoaded', function() {
 	  for(var n in nearby) {
 	    var v = nearby[n];
 	    
-	    debug('>> n : ' + n + ', v : ' + JSON.stringify(v));
+	    //debug('>> n : ' + n + ', v : ' + JSON.stringify(v));
 	    
 	    convertor.translate([new BMap.Point(v.coordinates[0], v.coordinates[1])], 1, 5, function (data) {
   			if(data.status === 0) {
   				var bmapPoint = data.points[0];
   				
-  				debug('' + bmapPoint);
+  				//debug('mapped : ' + JSON.stringify(bmapPoint));
   				
   				var marker = new BMap.Marker(bmapPoint, {icon: nearbyIcon});
   				
@@ -162,9 +164,11 @@ window.addEventListener('DOMContentLoaded', function() {
       }
 
       watchID = navigator.geolocation.watchPosition(function(position) {
-        debug('POSITION : (' + position.coords.longitude + ', ' + position.coords.latitude + ')');
-        geoHelper.sendPosition(position);
-        panMap(position);
+        setTimeout(function() {
+          debug('POSITION : (' + position.coords.longitude + ', ' + position.coords.latitude + ')');
+          geoHelper.sendPosition(position);
+          panMap(position);
+        }, 0);
       }, function(err) {
         errorHandler(err);
         watchID = doomLoop();

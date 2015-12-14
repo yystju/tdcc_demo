@@ -19,7 +19,7 @@
     
     b.isReady = false;
     
-    debug('business properties : ' + JSON.stringify(b));
+    //debug('business properties : ' + JSON.stringify(b));
     
     b._startConnection = function(isReconnect) {
       try {
@@ -35,7 +35,8 @@
             
             if(!isReconnect && data.id) {
               b.id = data.id;
-              debug('id := ' + b.id);
+              //debug('id := ' + b.id);
+              postMessage({'action': 'id', 'payload': b.id});
             } else if(!isReconnect && data) {
               //debug('[RESPONSE] : ' + JSON.stringify(data));
               postMessage({'action': 'remoteMessage', 'payload': data});
@@ -44,18 +45,18 @@
         };
         
         b.s.onopen = function (evt) {
-          debug('[OPEN]' + evt);
+          //debug('[OPEN]' + evt);
           b.isReady = true;
           command('ready', null);
         };
         
         b.s.onerror = function (error) {
-          debug('[ERROR]' + error);
+          //debug('[ERROR]' + error);
           b._stopConnection();
         };
         
         b.s.onclose = function (evt) {
-          debug('[CLOSE]' + evt);
+          //debug('[CLOSE]' + evt);
           b.isReady = false;
         };
       } catch (e) {
@@ -105,43 +106,43 @@
     };
     
     scope.onmessage = function(evt) {//MESSSAGE PUMP
-        debug('msg : ' + evt.data);
+        //debug('msg : ' + evt.data);
         
         if(evt.data && evt.data.action) {//NORMAL ACTIONS
           switch(evt.data.action) {
           case 'userInfo':
             b.userName = evt.data.payload.userName;
             b.shuttleLine = evt.data.payload.shuttleLine;
-            debug('userName has been set to : ' + business.userName);
-            debug('shuttleLine has been set to : ' + business.shuttleLine);
+            //debug('userName has been set to : ' + business.userName);
+            //debug('shuttleLine has been set to : ' + business.shuttleLine);
             break;
           case 'url':
               b.url = evt.data.payload;
-              debug('url has been set to : ' + business.url);
+              //debug('url has been set to : ' + business.url);
             break;
           case 'start':
-              debug('ACTION : START');
+              //debug('ACTION : START');
               b.startUp();
             break;
           case 'stop':
-              debug('ACTION : START');
+              //debug('ACTION : STOP');
               b.shutdown();
             break;
           case 'ping':
-              debug('ACTION : PING');
+              //debug('ACTION : PING');
               b.ping();
             break;
           case 'reconnect':
-              debug('ACTION : ONLINE');
+              //debug('ACTION : ONLINE');
               b.reconnect();
             break;
           case 'position':
-              debug('ACTION : POSITION');
+              //debug('ACTION : POSITION');
               var position = evt.data.payload;
               b.upload(position);
             break;
           default:
-            debug('UNKNOWN ACTION : ' + evt.data.action + ', payload : ' + evt.data);
+            //debug('UNKNOWN ACTION : ' + evt.data.action + ', payload : ' + evt.data);
             break;
           }
         }
