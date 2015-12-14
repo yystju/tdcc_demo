@@ -16,17 +16,17 @@
 		
 		window.addEventListener("devicemotion", function(evt) {
 			debug('[devicemotion]');
-			console.dir(evt.acceleration);
-			console.dir(evt.accelerationIncludingGravity);
-			console.dir(evt.rotationRate);
+			debug(evt.acceleration);
+			debug(evt.accelerationIncludingGravity);
+			debug(evt.rotationRate);
 			debug(evt);
 		}, false);
 		
 		window.addEventListener("deviceorientation", function(evt) {
 			debug('[deviceorientation]');
-			console.dir(evt.acceleration);
-			console.dir(evt.accelerationIncludingGravity);
-			console.dir(evt.rotationRate);
+			debug(evt.acceleration);
+			debug(evt.accelerationIncludingGravity);
+			debug(evt.rotationRate);
 			debug(evt);
 		}, false);
 	}, false);
